@@ -4,6 +4,16 @@ IRP 가입자는 많은데 계좌는 작은 이유를 공시 데이터와 앱 �
 
 > 진행 중: 분석과 [개선 제안서](docs/proposal.md)는 완료했고, Tableau Public 대시보드는 공개 준비 중입니다.
 
+## 대시보드
+
+![IRP 객단가 레이더 대시보드](docs/images/dashboard.png)
+
+Tableau로 만들었습니다. 통합문서는 [`data/tableau/irp_aov_radar.twb`](data/tableau/irp_aov_radar.twb)이고, [`scripts/build_twb.py`](scripts/build_twb.py)로 다시 만들 수 있습니다.
+
+- 화면 1: IRP 계약 5만 건 이상 증권사 7곳. 주황 점이 한국투자증권입니다.
+- 화면 2: 불편 유형 머리글은 줄임말입니다. 기능 = 기능 부재, 안내 = 정보 부족, 절차 = 절차·서류·대면 요구, 비용 = 수수료·비용.
+- 화면 2·3은 증권 3사 합계입니다.
+
 ## 출발 질문
 
 한국투자증권은 IRP 계약 수가 증권업권 1위지만, 계약 1건당 적립금은 미래에셋증권의 42% 수준입니다.

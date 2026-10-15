@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PROC = ROOT / "data" / "processed"
 OUT = ROOT / "data" / "tableau"
 FOCUS = ["한국투자증권", "미래에셋증권", "삼성증권"]
+MIN_CONTRACTS = 50_000
 
 STAGE_ORDER = ["가입·계좌개설", "첫 납입·입금", "정기 납입·자동투자", "상품 선택·운용", "수익률·잔고 조회",
                "타사 연금 이전", "세액공제·서류", "인출·해지·수령", "연금 일반(단계 불명)"]
@@ -65,6 +66,9 @@ def build_aov():
             "market_avg_per_contract_10k_krw": round(reserve * 100_000_000 / contracts / 10_000),
             "highlight": r["provider"] if r["provider"] in FOCUS else "기타 증권사",
         })
+    # 계약 수가 아주 적은 소형사는 1건당 적립금이 튀어 축을 왜곡하므로 2025년 5만 건 이상인 회사만 남긴다
+    major = {r["provider"] for r in out if r["year"] == "2025" and r["contracts"] >= MIN_CONTRACTS}
+    out = [r for r in out if r["provider"] in major]
     write("t1_aov_trend.csv", list(out[0]), out)
 
 
@@ -94,6 +98,7 @@ def build_opportunities(labels):
             "commerce_lever": lever, "meaning": meaning,
             "pain_reviews_3co": len(subset), "share_3co": round(len(subset) / total, 4) if total else 0,
             "pain_reviews_kis": kis, "top_pain_type": top_pain[0][0] if top_pain else "",
+            "share_label": f"{len(subset) / total:.0%}" if total else "0%",
             "example_requests": " / ".join(k for k, _ in requests),
         })
     for rank, row in enumerate(sorted(out, key=lambda r: -r["pain_reviews_3co"]), 1):

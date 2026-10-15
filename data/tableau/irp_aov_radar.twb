@@ -24,13 +24,13 @@
           </columns>
         </relation>
       </connection>
-      <column datatype='string' name='[provider]' role='dimension' type='nominal' />
-      <column datatype='integer' name='[year]' role='dimension' type='ordinal' />
-      <column datatype='integer' name='[contracts]' role='measure' type='quantitative' />
-      <column datatype='real' name='[reserve_100m_krw]' role='measure' type='quantitative' />
-      <column datatype='integer' name='[reserve_per_contract_10k_krw]' role='measure' type='quantitative' />
-      <column datatype='integer' name='[market_avg_per_contract_10k_krw]' role='measure' type='quantitative' />
-      <column datatype='string' name='[highlight]' role='dimension' type='nominal' />
+      <column caption="증권사" datatype='string' name='[provider]' role='dimension' type='nominal' />
+      <column caption="연도" datatype='integer' name='[year]' role='dimension' type='ordinal' />
+      <column caption="IRP 계약 수(건)" datatype='integer' name='[contracts]' role='measure' type='quantitative' />
+      <column caption="적립금(억 원)" datatype='real' name='[reserve_100m_krw]' role='measure' type='quantitative' />
+      <column caption="계약 1건당 적립금(만 원)" datatype='integer' name='[reserve_per_contract_10k_krw]' role='measure' type='quantitative' />
+      <column caption="전 업권 평균(만 원)" datatype='integer' name='[market_avg_per_contract_10k_krw]' role='measure' type='quantitative' />
+      <column caption="구분" datatype='string' name='[highlight]' role='dimension' type='nominal' />
     </datasource>
     <datasource caption="t2_heatmap" inline='true' name='federated.irp_t2' version='18.1'>
       <connection class='federated'>
@@ -53,15 +53,15 @@
           </columns>
         </relation>
       </connection>
-      <column datatype='string' name='[company]' role='dimension' type='nominal' />
-      <column datatype='string' name='[journey_stage]' role='dimension' type='nominal' />
-      <column datatype='string' name='[pain_type]' role='dimension' type='nominal' />
-      <column datatype='integer' name='[reviews]' role='measure' type='quantitative' />
-      <column datatype='real' name='[share_of_company_pain]' role='measure' type='quantitative' />
-      <column datatype='integer' name='[stage_order]' role='dimension' type='ordinal' />
-      <column datatype='integer' name='[pain_order]' role='dimension' type='ordinal' />
-      <column datatype='string' name='[stage_label]' role='dimension' type='nominal' />
-      <column datatype='string' name='[pain_label]' role='dimension' type='nominal' />
+      <column caption="증권사" datatype='string' name='[company]' role='dimension' type='nominal' />
+      <column caption="journey_stage" datatype='string' name='[journey_stage]' role='dimension' type='nominal' />
+      <column caption="pain_type" datatype='string' name='[pain_type]' role='dimension' type='nominal' />
+      <column caption="불편 리뷰(건)" datatype='integer' name='[reviews]' role='measure' type='quantitative' />
+      <column caption="share_of_company_pain" datatype='real' name='[share_of_company_pain]' role='measure' type='quantitative' />
+      <column caption="stage_order" datatype='integer' name='[stage_order]' role='dimension' type='ordinal' />
+      <column caption="pain_order" datatype='integer' name='[pain_order]' role='dimension' type='ordinal' />
+      <column caption="여정 단계" datatype='string' name='[stage_label]' role='dimension' type='nominal' />
+      <column caption="불편 유형" datatype='string' name='[pain_label]' role='dimension' type='nominal' />
     </datasource>
     <datasource caption="t3_opportunities" inline='true' name='federated.irp_t3' version='18.1'>
       <connection class='federated'>
@@ -80,21 +80,23 @@
             <column datatype='real' name="share_3co" ordinal='5' />
             <column datatype='integer' name="pain_reviews_kis" ordinal='6' />
             <column datatype='string' name="top_pain_type" ordinal='7' />
-            <column datatype='string' name="example_requests" ordinal='8' />
-            <column datatype='string' name="lever_label" ordinal='9' />
+            <column datatype='string' name="share_label" ordinal='8' />
+            <column datatype='string' name="example_requests" ordinal='9' />
+            <column datatype='string' name="lever_label" ordinal='10' />
           </columns>
         </relation>
       </connection>
-      <column datatype='string' name='[journey_stage]' role='dimension' type='nominal' />
-      <column datatype='integer' name='[stage_order]' role='dimension' type='ordinal' />
-      <column datatype='string' name='[commerce_lever]' role='dimension' type='nominal' />
-      <column datatype='string' name='[meaning]' role='dimension' type='nominal' />
-      <column datatype='integer' name='[pain_reviews_3co]' role='measure' type='quantitative' />
-      <column datatype='real' name='[share_3co]' role='measure' type='quantitative' />
-      <column datatype='integer' name='[pain_reviews_kis]' role='measure' type='quantitative' />
-      <column datatype='string' name='[top_pain_type]' role='dimension' type='nominal' />
-      <column datatype='string' name='[example_requests]' role='dimension' type='nominal' />
-      <column datatype='string' name='[lever_label]' role='dimension' type='nominal' />
+      <column caption="journey_stage" datatype='string' name='[journey_stage]' role='dimension' type='nominal' />
+      <column caption="stage_order" datatype='integer' name='[stage_order]' role='dimension' type='ordinal' />
+      <column caption="commerce_lever" datatype='string' name='[commerce_lever]' role='dimension' type='nominal' />
+      <column caption="의미" datatype='string' name='[meaning]' role='dimension' type='nominal' />
+      <column caption="3사 불편 리뷰(건)" datatype='integer' name='[pain_reviews_3co]' role='measure' type='quantitative' />
+      <column caption="share_3co" datatype='real' name='[share_3co]' role='measure' type='quantitative' />
+      <column caption="한국투자증권(건)" datatype='integer' name='[pain_reviews_kis]' role='measure' type='quantitative' />
+      <column caption="가장 많은 불편" datatype='string' name='[top_pain_type]' role='dimension' type='nominal' />
+      <column caption="비중" datatype='string' name='[share_label]' role='dimension' type='nominal' />
+      <column caption="고객 요청 예" datatype='string' name='[example_requests]' role='dimension' type='nominal' />
+      <column caption="커머스 방식" datatype='string' name='[lever_label]' role='dimension' type='nominal' />
     </datasource>
     <datasource caption="t4_quality" inline='true' name='federated.irp_t4' version='18.1'>
       <connection class='federated'>
@@ -112,10 +114,10 @@
           </columns>
         </relation>
       </connection>
-      <column datatype='string' name='[area]' role='dimension' type='nominal' />
-      <column datatype='string' name='[metric]' role='dimension' type='nominal' />
-      <column datatype='string' name='[value]' role='dimension' type='nominal' />
-      <column datatype='string' name='[note]' role='dimension' type='nominal' />
+      <column caption="영역" datatype='string' name='[area]' role='dimension' type='nominal' />
+      <column caption="항목" datatype='string' name='[metric]' role='dimension' type='nominal' />
+      <column caption="값" datatype='string' name='[value]' role='dimension' type='nominal' />
+      <column caption="설명" datatype='string' name='[note]' role='dimension' type='nominal' />
     </datasource>
   </datasources>
   <worksheets>
@@ -126,17 +128,17 @@
             <datasource name='federated.irp_t1' />
           </datasources>
           <datasource-dependencies datasource='federated.irp_t1'>
-            <column datatype='integer' name='[contracts]' role='measure' type='quantitative' />
+            <column caption="IRP 계약 수(건)" datatype='integer' name='[contracts]' role='measure' type='quantitative' />
             <column-instance column='[contracts]' derivation='Sum' name='[sum:contracts:qk]' pivot='key' type='quantitative' />
-            <column datatype='integer' name='[reserve_per_contract_10k_krw]' role='measure' type='quantitative' />
+            <column caption="계약 1건당 적립금(만 원)" datatype='integer' name='[reserve_per_contract_10k_krw]' role='measure' type='quantitative' />
             <column-instance column='[reserve_per_contract_10k_krw]' derivation='Sum' name='[sum:reserve_per_contract_10k_krw:qk]' pivot='key' type='quantitative' />
-            <column datatype='string' name='[highlight]' role='dimension' type='nominal' />
+            <column caption="구분" datatype='string' name='[highlight]' role='dimension' type='nominal' />
             <column-instance column='[highlight]' derivation='None' name='[none:highlight:nk]' pivot='key' type='nominal' />
-            <column datatype='real' name='[reserve_100m_krw]' role='measure' type='quantitative' />
+            <column caption="적립금(억 원)" datatype='real' name='[reserve_100m_krw]' role='measure' type='quantitative' />
             <column-instance column='[reserve_100m_krw]' derivation='Sum' name='[sum:reserve_100m_krw:qk]' pivot='key' type='quantitative' />
-            <column datatype='string' name='[provider]' role='dimension' type='nominal' />
+            <column caption="증권사" datatype='string' name='[provider]' role='dimension' type='nominal' />
             <column-instance column='[provider]' derivation='None' name='[none:provider:nk]' pivot='key' type='nominal' />
-            <column datatype='integer' name='[year]' role='dimension' type='ordinal' />
+            <column caption="연도" datatype='integer' name='[year]' role='dimension' type='ordinal' />
             <column-instance column='[year]' derivation='None' name='[none:year:ok]' pivot='key' type='ordinal' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.irp_t1].[none:year:ok]'>
@@ -147,7 +149,24 @@
           </slices>
           <aggregation value='true' />
         </view>
-        <style />
+        <style>
+          <style-rule element='mark'>
+            <encoding attr='color' field='[federated.irp_t1].[none:highlight:nk]' type='palette'>
+              <map to='#E8541F'>
+                <bucket>&quot;한국투자증권&quot;</bucket>
+              </map>
+              <map to='#4C78A8'>
+                <bucket>&quot;미래에셋증권&quot;</bucket>
+              </map>
+              <map to='#72B7B2'>
+                <bucket>&quot;삼성증권&quot;</bucket>
+              </map>
+              <map to='#C9CED6'>
+                <bucket>&quot;기타 증권사&quot;</bucket>
+              </map>
+            </encoding>
+          </style-rule>
+        </style>
         <panes>
           <pane selection-relaxation-option='selection-relaxation-allow'>
             <view>
@@ -159,6 +178,12 @@
               <size column='[federated.irp_t1].[sum:reserve_100m_krw:qk]' />
               <text column='[federated.irp_t1].[none:provider:nk]' />
             </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='false' />
+              </style-rule>
+            </style>
           </pane>
         </panes>
         <rows>[federated.irp_t1].[sum:reserve_per_contract_10k_krw:qk]</rows>
@@ -172,16 +197,20 @@
             <datasource name='federated.irp_t2' />
           </datasources>
           <datasource-dependencies datasource='federated.irp_t2'>
-            <column datatype='string' name='[pain_label]' role='dimension' type='nominal' />
+            <column caption="불편 유형" datatype='string' name='[pain_label]' role='dimension' type='nominal' />
             <column-instance column='[pain_label]' derivation='None' name='[none:pain_label:nk]' pivot='key' type='nominal' />
-            <column datatype='string' name='[stage_label]' role='dimension' type='nominal' />
+            <column caption="여정 단계" datatype='string' name='[stage_label]' role='dimension' type='nominal' />
             <column-instance column='[stage_label]' derivation='None' name='[none:stage_label:nk]' pivot='key' type='nominal' />
-            <column datatype='integer' name='[reviews]' role='measure' type='quantitative' />
+            <column caption="불편 리뷰(건)" datatype='integer' name='[reviews]' role='measure' type='quantitative' />
             <column-instance column='[reviews]' derivation='Sum' name='[sum:reviews:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
           <aggregation value='true' />
         </view>
-        <style />
+        <style>
+          <style-rule element='mark'>
+            <encoding attr='color' field='[federated.irp_t2].[sum:reviews:qk]' palette='orange_10_0' type='interpolated' />
+          </style-rule>
+        </style>
         <panes>
           <pane selection-relaxation-option='selection-relaxation-allow'>
             <view>
@@ -192,6 +221,12 @@
               <color column='[federated.irp_t2].[sum:reviews:qk]' />
               <text column='[federated.irp_t2].[sum:reviews:qk]' />
             </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='false' />
+              </style-rule>
+            </style>
           </pane>
         </panes>
         <rows>[federated.irp_t2].[none:stage_label:nk]</rows>
@@ -205,24 +240,28 @@
             <datasource name='federated.irp_t3' />
           </datasources>
           <datasource-dependencies datasource='federated.irp_t3'>
-            <column datatype='integer' name='[pain_reviews_3co]' role='measure' type='quantitative' />
+            <column caption="3사 불편 리뷰(건)" datatype='integer' name='[pain_reviews_3co]' role='measure' type='quantitative' />
             <column-instance column='[pain_reviews_3co]' derivation='Sum' name='[sum:pain_reviews_3co:qk]' pivot='key' type='quantitative' />
-            <column datatype='string' name='[lever_label]' role='dimension' type='nominal' />
+            <column caption="커머스 방식" datatype='string' name='[lever_label]' role='dimension' type='nominal' />
             <column-instance column='[lever_label]' derivation='None' name='[none:lever_label:nk]' pivot='key' type='nominal' />
-            <column datatype='real' name='[share_3co]' role='measure' type='quantitative' />
-            <column-instance column='[share_3co]' derivation='Sum' name='[sum:share_3co:qk]' pivot='key' type='quantitative' />
-            <column datatype='string' name='[meaning]' role='dimension' type='nominal' />
+            <column caption="비중" datatype='string' name='[share_label]' role='dimension' type='nominal' />
+            <column-instance column='[share_label]' derivation='None' name='[none:share_label:nk]' pivot='key' type='nominal' />
+            <column caption="의미" datatype='string' name='[meaning]' role='dimension' type='nominal' />
             <column-instance column='[meaning]' derivation='None' name='[none:meaning:nk]' pivot='key' type='nominal' />
-            <column datatype='string' name='[example_requests]' role='dimension' type='nominal' />
+            <column caption="고객 요청 예" datatype='string' name='[example_requests]' role='dimension' type='nominal' />
             <column-instance column='[example_requests]' derivation='None' name='[none:example_requests:nk]' pivot='key' type='nominal' />
-            <column datatype='string' name='[top_pain_type]' role='dimension' type='nominal' />
+            <column caption="가장 많은 불편" datatype='string' name='[top_pain_type]' role='dimension' type='nominal' />
             <column-instance column='[top_pain_type]' derivation='None' name='[none:top_pain_type:nk]' pivot='key' type='nominal' />
-            <column datatype='integer' name='[pain_reviews_kis]' role='measure' type='quantitative' />
+            <column caption="한국투자증권(건)" datatype='integer' name='[pain_reviews_kis]' role='measure' type='quantitative' />
             <column-instance column='[pain_reviews_kis]' derivation='Sum' name='[sum:pain_reviews_kis:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
           <aggregation value='true' />
         </view>
-        <style />
+        <style>
+          <style-rule element='mark'>
+            <encoding attr='color' field='[federated.irp_t3].[sum:pain_reviews_3co:qk]' palette='orange_10_0' type='interpolated' />
+          </style-rule>
+        </style>
         <panes>
           <pane selection-relaxation-option='selection-relaxation-allow'>
             <view>
@@ -230,13 +269,19 @@
             </view>
             <mark class='Bar' />
             <encodings>
-              <color column='[federated.irp_t3].[sum:share_3co:qk]' />
-              <text column='[federated.irp_t3].[sum:share_3co:qk]' />
+              <color column='[federated.irp_t3].[sum:pain_reviews_3co:qk]' />
+              <text column='[federated.irp_t3].[none:share_label:nk]' />
               <lod column='[federated.irp_t3].[none:meaning:nk]' />
               <lod column='[federated.irp_t3].[none:example_requests:nk]' />
               <lod column='[federated.irp_t3].[none:top_pain_type:nk]' />
               <lod column='[federated.irp_t3].[sum:pain_reviews_kis:qk]' />
             </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='false' />
+              </style-rule>
+            </style>
           </pane>
         </panes>
         <rows>[federated.irp_t3].[none:lever_label:nk]</rows>
@@ -250,13 +295,13 @@
             <datasource name='federated.irp_t4' />
           </datasources>
           <datasource-dependencies datasource='federated.irp_t4'>
-            <column datatype='string' name='[area]' role='dimension' type='nominal' />
+            <column caption="영역" datatype='string' name='[area]' role='dimension' type='nominal' />
             <column-instance column='[area]' derivation='None' name='[none:area:nk]' pivot='key' type='nominal' />
-            <column datatype='string' name='[metric]' role='dimension' type='nominal' />
+            <column caption="항목" datatype='string' name='[metric]' role='dimension' type='nominal' />
             <column-instance column='[metric]' derivation='None' name='[none:metric:nk]' pivot='key' type='nominal' />
-            <column datatype='string' name='[value]' role='dimension' type='nominal' />
+            <column caption="값" datatype='string' name='[value]' role='dimension' type='nominal' />
             <column-instance column='[value]' derivation='None' name='[none:value:nk]' pivot='key' type='nominal' />
-            <column datatype='string' name='[note]' role='dimension' type='nominal' />
+            <column caption="설명" datatype='string' name='[note]' role='dimension' type='nominal' />
             <column-instance column='[note]' derivation='None' name='[none:note:nk]' pivot='key' type='nominal' />
           </datasource-dependencies>
           <aggregation value='true' />
@@ -271,6 +316,12 @@
             <encodings>
               <text column='[federated.irp_t4].[none:note:nk]' />
             </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='false' />
+              </style-rule>
+            </style>
           </pane>
         </panes>
         <rows>([federated.irp_t4].[none:area:nk] / [federated.irp_t4].[none:metric:nk] / [federated.irp_t4].[none:value:nk])</rows>
@@ -278,6 +329,35 @@
       </table>
     </worksheet>
   </worksheets>
+  <dashboards>
+    <dashboard name="IRP 객단가 레이더">
+      <style />
+      <size maxheight='1000' maxwidth='1200' minheight='1000' minwidth='1200' />
+      <zones>
+      <zone h='100000' id='1' type-v2='layout-basic' w='100000' x='0' y='0'>
+        <zone h='5000' id='2' type-v2='text' w='100000' x='0' y='0'>
+          <formatted-text>
+            <run fontsize='20' bold='true'>IRP 객단가 레이더</run>
+          </formatted-text>
+        </zone>
+        <zone h='6000' id='3' type-v2='text' w='100000' x='0' y='5000'>
+          <formatted-text>
+            <run fontsize='11'>한국투자증권은 IRP 계약 수 1위(47.3만 건)지만 계약 1건당 적립금은 1,572만 원으로 미래에셋증권(3,736만 원)의 42%, 전 업권 평균(1,858만 원)보다 낮습니다. 증권 3사 연금 리뷰의 불편 59%는 가입 이후 단계에 몰려 있습니다.</run>
+          </formatted-text>
+        </zone>
+        <zone h='42000' id='4' name="1 객단가 격차" w='50000' x='0' y='11000' />
+        <zone h='42000' id='5' name="2 불편 히트맵" w='50000' x='50000' y='11000' />
+        <zone h='42000' id='6' name="3 기회" w='50000' x='0' y='53000' />
+        <zone h='42000' id='7' name="4 관리" w='50000' x='50000' y='53000' />
+        <zone h='5000' id='8' type-v2='text' w='100000' x='0' y='95000'>
+          <formatted-text>
+            <run fontsize='9'>출처: 금융감독원 통합연금포털 연금통계(2025년 말), 구글 플레이 공개 리뷰(증권 3사 연금 관련 349건). 화면 1은 IRP 계약 5만 건 이상 증권사, 화면 2·3은 3사 합계입니다. 리뷰 원문은 공개하지 않으며, 투자 권유가 아닌 서비스 기획 분석입니다.</run>
+          </formatted-text>
+        </zone>
+      </zone>
+      </zones>
+    </dashboard>
+  </dashboards>
   <windows source-height='30'>
     <window class='worksheet' name="1 객단가 격차">
       <cards>
@@ -322,6 +402,15 @@
           </strip>
         </edge>
       </cards>
+    </window>
+    <window class='dashboard' maximized='true' name="IRP 객단가 레이더">
+      <viewpoints>
+        <viewpoint name="1 객단가 격차" />
+        <viewpoint name="2 불편 히트맵" />
+        <viewpoint name="3 기회" />
+        <viewpoint name="4 관리" />
+      </viewpoints>
+      <active id='-1' />
     </window>
   </windows>
 </workbook>

@@ -1,0 +1,21 @@
+{
+  "latest_year": 2025,
+  "kis_per_contract": 1572,
+  "mirae_per_contract": 3736,
+  "samsung_per_contract": 2699,
+  "kis_contracts": 472734,
+  "kis_vs_mirae": 0.421,
+  "kis_vs_market": 0.846,
+  "kis_net_new_per_contract": 2236,
+  "pension_reviews": 349,
+  "pain_reviews": 264,
+  "post_join_share": 59.1,
+  "kis_pain_reviews": 37,
+  "kis_error_share": 37.8,
+  "prompt_versions": [
+    "v1"
+  ],
+  "models": [
+    "claude-code-session"
+  ]
+}

@@ -82,10 +82,20 @@ IRP 가입자는 많은데 계좌는 작은 이유를 **금감원 공시와 앱 
 
 ### 5. 운영하며 고도화
 
+갱신은 명령 하나로 합니다. 실행할 때마다 수집 → 공식 합계 검증 → 계산 → 대시보드 데이터·통합문서 재생성 → 스냅샷 저장 → 변경 기록이 순서대로 돌고, 한 단계라도 실패하면 스냅샷을 남기지 않고 멈춥니다.
+
+```bash
+.venv/Scripts/python scripts/refresh.py              # 공시 갱신 (API 키 불필요)
+.venv/Scripts/python scripts/refresh.py --reviews    # 리뷰도 새로 수집·분류 (.env에 ANTHROPIC_API_KEY 필요)
+```
+
+- **스냅샷:** [`data/snapshots/<날짜>/`](data/snapshots)에 그날의 핵심 지표(`metrics.json`)와 공개 결과 사본을 남깁니다.
+- **변경 기록:** [`docs/data-changelog.md`](docs/data-changelog.md)에 직전 스냅샷과 비교한 표를 맨 위에 추가합니다. 핵심 지표가 좋아졌는지 나빠졌는지 표시하고, 분류 기준(프롬프트 버전)이 바뀌면 리뷰 지표를 그대로 비교할 수 없다고 함께 적습니다.
+
 | 주기 | 할 일 |
 |---|---|
-| 분기 | 금감원 공시를 다시 수집해 계약 1건당 적립금의 변화를 경쟁사와 비교 |
-| 월 | 새 리뷰를 같은 기준(`v1`)으로 분류하고 단계별 불편 비중의 변화를 기록 |
+| 분기 | `refresh.py` 실행. 사업자별 통계는 연말 기준으로 1년에 한 번 갱신되므로, 새 연도 자료가 나왔는지 확인하고 반영 |
+| 월 | `refresh.py --reviews` 실행. 새 리뷰를 같은 기준(`v1`)으로 분류하고 단계별 불편 비중의 변화를 기록 |
 | 분류 기준 변경 시 | 버전을 올리고(`v2`) 같은 표본으로 이전 버전과 일치율을 비교한 뒤 적용 |
 | 다음 확장 | iOS 앱스토어 리뷰 추가로 한국투자증권 표본 보강, 사람 검수 표본 추가, 제안 ①의 화면 시제품 |
 
@@ -124,6 +134,9 @@ v1 결과는 [`scripts/classify_reviews.py`](scripts/classify_reviews.py)의 프
 ```bash
 python -m venv .venv
 .venv/Scripts/python -m pip install -r requirements.txt
+.venv/Scripts/python scripts/refresh.py               # 아래 단계를 한 번에 실행하고 스냅샷·변경 기록 남기기
+
+# 단계별로 실행할 때
 .venv/Scripts/python scripts/collect_fss.py           # 금감원 공시 수집과 합계 검증
 .venv/Scripts/python scripts/build_aov.py             # 계약 1건당 적립금
 .venv/Scripts/python scripts/analyze_trend.py         # 연도별 추이, 순증 1건당 적립금
@@ -141,6 +154,7 @@ python -m venv .venv
 | 문제, 근거, 제안 3개, 성공 지표, 보안 전제 | [개선 제안서](docs/proposal.md) |
 | 대시보드 구성과 다시 만드는 방법 | [대시보드 제작 가이드](docs/tableau-build-guide.md) |
 | 공시 원자료와 계산 결과 | [`data/raw/fss/`](data/raw/fss), [`data/processed/`](data/processed) |
+| 갱신 기록과 날짜별 지표 | [`docs/data-changelog.md`](docs/data-changelog.md), [`data/snapshots/`](data/snapshots), [`scripts/refresh.py`](scripts/refresh.py) |
 | 격차가 벌어진 시점 (연도별 추이) | [`scripts/analyze_trend.py`](scripts/analyze_trend.py), [`data/processed/irp_trend.csv`](data/processed/irp_trend.csv) |
 | 리뷰 분류 결과(원문 제외)와 집계 | [`data/processed/review_labels.csv`](data/processed/review_labels.csv), [`review_heatmap.csv`](data/processed/review_heatmap.csv) |
 | 분류 기준 (반복 분류용 에이전트 정의 포함) | [`scripts/classify_reviews.py`](scripts/classify_reviews.py), [`.claude/agents/irp-review-classifier.md`](.claude/agents/irp-review-classifier.md) |

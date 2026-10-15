@@ -69,6 +69,7 @@ python scripts/build_aov.py
 .venv/Scripts/python scripts/collect_reviews.py
 .venv/Scripts/python scripts/classify_reviews.py        # .env에 ANTHROPIC_API_KEY 필요
 .venv/Scripts/python scripts/summarize_reviews.py
+.venv/Scripts/python scripts/build_tableau.py
 ```
 
 ## 진행 상황
@@ -77,5 +78,6 @@ python scripts/build_aov.py
 - [x] 계약 1건당 적립금 계산
 - [x] 앱 리뷰 수집 (전체 33,667건, 연금 관련 349건)
 - [x] 리뷰 분류 (여정 단계 × 불편 유형)와 표본 50건 검수
-- [ ] Tableau Public 대시보드
+- [x] Tableau용 데이터 4종 ([`data/tableau/`](data/tableau)) 과 [제작 가이드](docs/tableau-build-guide.md)
+- [ ] Tableau Public 대시보드 공개
 - [ ] 개선 제안서

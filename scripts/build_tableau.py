@@ -39,7 +39,8 @@ def read(path):
 
 
 def write(name, fields, rows):
-    with (OUT / name).open("w", newline="", encoding="utf-8-sig") as f:
+    # BOM 없이 저장한다. Tableau 텍스트 커넥터가 첫 열 이름에 BOM을 붙여 읽는 것을 막기 위해서다.
+    with (OUT / name).open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
         writer.writerows(rows)
@@ -72,8 +73,10 @@ def build_heatmap():
     for r in read(PROC / "review_heatmap.csv"):
         if r["journey_stage"] not in STAGE_ORDER:
             continue
-        out.append({**r, "stage_order": STAGE_ORDER.index(r["journey_stage"]) + 1,
-                    "pain_order": PAIN_ORDER.index(r["pain_type"]) + 1})
+        stage_no, pain_no = STAGE_ORDER.index(r["journey_stage"]) + 1, PAIN_ORDER.index(r["pain_type"]) + 1
+        # 번호를 붙인 라벨은 Tableau에서 별도 정렬 설정 없이 여정·불편 순서대로 놓이게 한다
+        out.append({**r, "stage_order": stage_no, "pain_order": pain_no,
+                    "stage_label": f"{stage_no}. {r['journey_stage']}", "pain_label": f"{pain_no}. {r['pain_type']}"})
     write("t2_heatmap.csv", list(out[0]), out)
 
 
@@ -93,6 +96,8 @@ def build_opportunities(labels):
             "pain_reviews_kis": kis, "top_pain_type": top_pain[0][0] if top_pain else "",
             "example_requests": " / ".join(k for k, _ in requests),
         })
+    for rank, row in enumerate(sorted(out, key=lambda r: -r["pain_reviews_3co"]), 1):
+        row["lever_label"] = f"{rank}. {row['commerce_lever']}"  # 불편 많은 순으로 놓이게 하는 라벨
     write("t3_opportunities.csv", list(out[0]), out)
 
 
@@ -111,6 +116,10 @@ def build_quality(labels):
         {"area": "보안·개인정보", "metric": "개인정보 포함 리뷰 처리", "value": "1건 제외", "note": "앱 리뷰가 아닌 개인 글"},
         {"area": "보안·개인정보", "metric": "내부 도입 시 전제", "value": "내부망 배치", "note": "고객 계좌 데이터 결합 시 개인신용정보 → 망분리 예외 범위 확인 필요"},
     ]
+    areas = list(dict.fromkeys(r["area"] for r in out))
+    for i, r in enumerate(out, 1):
+        r["area"] = f"{areas.index(r['area']) + 1}. {r['area']}"  # 영역 순서 고정
+        r["metric"] = f"{i:02d} {r['metric']}"  # 항목 순서 고정
     write("t4_quality.csv", list(out[0]), out)
 
 

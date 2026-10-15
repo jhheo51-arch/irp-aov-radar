@@ -1,0 +1,327 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<workbook source-build='2023.1.0 (20231.23.0310.1045)' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <preferences>
+    <preference name='ui.encoding.shelf.height' value='24' />
+    <preference name='ui.shelf.height' value='26' />
+  </preferences>
+  <datasources>
+    <datasource caption="t1_aov_trend" inline='true' name='federated.irp_t1' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption="t1_aov_trend" name='textscan.irp_t1'>
+            <connection class='textscan' directory="C:/STA Track/Claude/irp-aov-radar/data/tableau" filename="t1_aov_trend.csv" password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.irp_t1' name="t1_aov_trend.csv" table='[t1_aov_trend#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='ko_KR' separator=','>
+            <column datatype='string' name="provider" ordinal='0' />
+            <column datatype='integer' name="year" ordinal='1' />
+            <column datatype='integer' name="contracts" ordinal='2' />
+            <column datatype='real' name="reserve_100m_krw" ordinal='3' />
+            <column datatype='integer' name="reserve_per_contract_10k_krw" ordinal='4' />
+            <column datatype='integer' name="market_avg_per_contract_10k_krw" ordinal='5' />
+            <column datatype='string' name="highlight" ordinal='6' />
+          </columns>
+        </relation>
+      </connection>
+      <column datatype='string' name='[provider]' role='dimension' type='nominal' />
+      <column datatype='integer' name='[year]' role='dimension' type='ordinal' />
+      <column datatype='integer' name='[contracts]' role='measure' type='quantitative' />
+      <column datatype='real' name='[reserve_100m_krw]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[reserve_per_contract_10k_krw]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[market_avg_per_contract_10k_krw]' role='measure' type='quantitative' />
+      <column datatype='string' name='[highlight]' role='dimension' type='nominal' />
+    </datasource>
+    <datasource caption="t2_heatmap" inline='true' name='federated.irp_t2' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption="t2_heatmap" name='textscan.irp_t2'>
+            <connection class='textscan' directory="C:/STA Track/Claude/irp-aov-radar/data/tableau" filename="t2_heatmap.csv" password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.irp_t2' name="t2_heatmap.csv" table='[t2_heatmap#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='ko_KR' separator=','>
+            <column datatype='string' name="company" ordinal='0' />
+            <column datatype='string' name="journey_stage" ordinal='1' />
+            <column datatype='string' name="pain_type" ordinal='2' />
+            <column datatype='integer' name="reviews" ordinal='3' />
+            <column datatype='real' name="share_of_company_pain" ordinal='4' />
+            <column datatype='integer' name="stage_order" ordinal='5' />
+            <column datatype='integer' name="pain_order" ordinal='6' />
+            <column datatype='string' name="stage_label" ordinal='7' />
+            <column datatype='string' name="pain_label" ordinal='8' />
+          </columns>
+        </relation>
+      </connection>
+      <column datatype='string' name='[company]' role='dimension' type='nominal' />
+      <column datatype='string' name='[journey_stage]' role='dimension' type='nominal' />
+      <column datatype='string' name='[pain_type]' role='dimension' type='nominal' />
+      <column datatype='integer' name='[reviews]' role='measure' type='quantitative' />
+      <column datatype='real' name='[share_of_company_pain]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[stage_order]' role='dimension' type='ordinal' />
+      <column datatype='integer' name='[pain_order]' role='dimension' type='ordinal' />
+      <column datatype='string' name='[stage_label]' role='dimension' type='nominal' />
+      <column datatype='string' name='[pain_label]' role='dimension' type='nominal' />
+    </datasource>
+    <datasource caption="t3_opportunities" inline='true' name='federated.irp_t3' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption="t3_opportunities" name='textscan.irp_t3'>
+            <connection class='textscan' directory="C:/STA Track/Claude/irp-aov-radar/data/tableau" filename="t3_opportunities.csv" password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.irp_t3' name="t3_opportunities.csv" table='[t3_opportunities#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='ko_KR' separator=','>
+            <column datatype='string' name="journey_stage" ordinal='0' />
+            <column datatype='integer' name="stage_order" ordinal='1' />
+            <column datatype='string' name="commerce_lever" ordinal='2' />
+            <column datatype='string' name="meaning" ordinal='3' />
+            <column datatype='integer' name="pain_reviews_3co" ordinal='4' />
+            <column datatype='real' name="share_3co" ordinal='5' />
+            <column datatype='integer' name="pain_reviews_kis" ordinal='6' />
+            <column datatype='string' name="top_pain_type" ordinal='7' />
+            <column datatype='string' name="example_requests" ordinal='8' />
+            <column datatype='string' name="lever_label" ordinal='9' />
+          </columns>
+        </relation>
+      </connection>
+      <column datatype='string' name='[journey_stage]' role='dimension' type='nominal' />
+      <column datatype='integer' name='[stage_order]' role='dimension' type='ordinal' />
+      <column datatype='string' name='[commerce_lever]' role='dimension' type='nominal' />
+      <column datatype='string' name='[meaning]' role='dimension' type='nominal' />
+      <column datatype='integer' name='[pain_reviews_3co]' role='measure' type='quantitative' />
+      <column datatype='real' name='[share_3co]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[pain_reviews_kis]' role='measure' type='quantitative' />
+      <column datatype='string' name='[top_pain_type]' role='dimension' type='nominal' />
+      <column datatype='string' name='[example_requests]' role='dimension' type='nominal' />
+      <column datatype='string' name='[lever_label]' role='dimension' type='nominal' />
+    </datasource>
+    <datasource caption="t4_quality" inline='true' name='federated.irp_t4' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption="t4_quality" name='textscan.irp_t4'>
+            <connection class='textscan' directory="C:/STA Track/Claude/irp-aov-radar/data/tableau" filename="t4_quality.csv" password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.irp_t4' name="t4_quality.csv" table='[t4_quality#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='ko_KR' separator=','>
+            <column datatype='string' name="area" ordinal='0' />
+            <column datatype='string' name="metric" ordinal='1' />
+            <column datatype='string' name="value" ordinal='2' />
+            <column datatype='string' name="note" ordinal='3' />
+          </columns>
+        </relation>
+      </connection>
+      <column datatype='string' name='[area]' role='dimension' type='nominal' />
+      <column datatype='string' name='[metric]' role='dimension' type='nominal' />
+      <column datatype='string' name='[value]' role='dimension' type='nominal' />
+      <column datatype='string' name='[note]' role='dimension' type='nominal' />
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name="1 객단가 격차">
+      <table>
+        <view>
+          <datasources>
+            <datasource name='federated.irp_t1' />
+          </datasources>
+          <datasource-dependencies datasource='federated.irp_t1'>
+            <column datatype='integer' name='[contracts]' role='measure' type='quantitative' />
+            <column-instance column='[contracts]' derivation='Sum' name='[sum:contracts:qk]' pivot='key' type='quantitative' />
+            <column datatype='integer' name='[reserve_per_contract_10k_krw]' role='measure' type='quantitative' />
+            <column-instance column='[reserve_per_contract_10k_krw]' derivation='Sum' name='[sum:reserve_per_contract_10k_krw:qk]' pivot='key' type='quantitative' />
+            <column datatype='string' name='[highlight]' role='dimension' type='nominal' />
+            <column-instance column='[highlight]' derivation='None' name='[none:highlight:nk]' pivot='key' type='nominal' />
+            <column datatype='real' name='[reserve_100m_krw]' role='measure' type='quantitative' />
+            <column-instance column='[reserve_100m_krw]' derivation='Sum' name='[sum:reserve_100m_krw:qk]' pivot='key' type='quantitative' />
+            <column datatype='string' name='[provider]' role='dimension' type='nominal' />
+            <column-instance column='[provider]' derivation='None' name='[none:provider:nk]' pivot='key' type='nominal' />
+            <column datatype='integer' name='[year]' role='dimension' type='ordinal' />
+            <column-instance column='[year]' derivation='None' name='[none:year:ok]' pivot='key' type='ordinal' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.irp_t1].[none:year:ok]'>
+            <groupfilter function='member' level='[none:year:ok]' member='2025' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <slices>
+            <column>[federated.irp_t1].[none:year:ok]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Circle' />
+            <encodings>
+              <color column='[federated.irp_t1].[none:highlight:nk]' />
+              <size column='[federated.irp_t1].[sum:reserve_100m_krw:qk]' />
+              <text column='[federated.irp_t1].[none:provider:nk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.irp_t1].[sum:reserve_per_contract_10k_krw:qk]</rows>
+        <cols>[federated.irp_t1].[sum:contracts:qk]</cols>
+      </table>
+    </worksheet>
+    <worksheet name="2 불편 히트맵">
+      <table>
+        <view>
+          <datasources>
+            <datasource name='federated.irp_t2' />
+          </datasources>
+          <datasource-dependencies datasource='federated.irp_t2'>
+            <column datatype='string' name='[pain_label]' role='dimension' type='nominal' />
+            <column-instance column='[pain_label]' derivation='None' name='[none:pain_label:nk]' pivot='key' type='nominal' />
+            <column datatype='string' name='[stage_label]' role='dimension' type='nominal' />
+            <column-instance column='[stage_label]' derivation='None' name='[none:stage_label:nk]' pivot='key' type='nominal' />
+            <column datatype='integer' name='[reviews]' role='measure' type='quantitative' />
+            <column-instance column='[reviews]' derivation='Sum' name='[sum:reviews:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Square' />
+            <encodings>
+              <color column='[federated.irp_t2].[sum:reviews:qk]' />
+              <text column='[federated.irp_t2].[sum:reviews:qk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.irp_t2].[none:stage_label:nk]</rows>
+        <cols>[federated.irp_t2].[none:pain_label:nk]</cols>
+      </table>
+    </worksheet>
+    <worksheet name="3 기회">
+      <table>
+        <view>
+          <datasources>
+            <datasource name='federated.irp_t3' />
+          </datasources>
+          <datasource-dependencies datasource='federated.irp_t3'>
+            <column datatype='integer' name='[pain_reviews_3co]' role='measure' type='quantitative' />
+            <column-instance column='[pain_reviews_3co]' derivation='Sum' name='[sum:pain_reviews_3co:qk]' pivot='key' type='quantitative' />
+            <column datatype='string' name='[lever_label]' role='dimension' type='nominal' />
+            <column-instance column='[lever_label]' derivation='None' name='[none:lever_label:nk]' pivot='key' type='nominal' />
+            <column datatype='real' name='[share_3co]' role='measure' type='quantitative' />
+            <column-instance column='[share_3co]' derivation='Sum' name='[sum:share_3co:qk]' pivot='key' type='quantitative' />
+            <column datatype='string' name='[meaning]' role='dimension' type='nominal' />
+            <column-instance column='[meaning]' derivation='None' name='[none:meaning:nk]' pivot='key' type='nominal' />
+            <column datatype='string' name='[example_requests]' role='dimension' type='nominal' />
+            <column-instance column='[example_requests]' derivation='None' name='[none:example_requests:nk]' pivot='key' type='nominal' />
+            <column datatype='string' name='[top_pain_type]' role='dimension' type='nominal' />
+            <column-instance column='[top_pain_type]' derivation='None' name='[none:top_pain_type:nk]' pivot='key' type='nominal' />
+            <column datatype='integer' name='[pain_reviews_kis]' role='measure' type='quantitative' />
+            <column-instance column='[pain_reviews_kis]' derivation='Sum' name='[sum:pain_reviews_kis:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <encodings>
+              <color column='[federated.irp_t3].[sum:share_3co:qk]' />
+              <text column='[federated.irp_t3].[sum:share_3co:qk]' />
+              <lod column='[federated.irp_t3].[none:meaning:nk]' />
+              <lod column='[federated.irp_t3].[none:example_requests:nk]' />
+              <lod column='[federated.irp_t3].[none:top_pain_type:nk]' />
+              <lod column='[federated.irp_t3].[sum:pain_reviews_kis:qk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.irp_t3].[none:lever_label:nk]</rows>
+        <cols>[federated.irp_t3].[sum:pain_reviews_3co:qk]</cols>
+      </table>
+    </worksheet>
+    <worksheet name="4 관리">
+      <table>
+        <view>
+          <datasources>
+            <datasource name='federated.irp_t4' />
+          </datasources>
+          <datasource-dependencies datasource='federated.irp_t4'>
+            <column datatype='string' name='[area]' role='dimension' type='nominal' />
+            <column-instance column='[area]' derivation='None' name='[none:area:nk]' pivot='key' type='nominal' />
+            <column datatype='string' name='[metric]' role='dimension' type='nominal' />
+            <column-instance column='[metric]' derivation='None' name='[none:metric:nk]' pivot='key' type='nominal' />
+            <column datatype='string' name='[value]' role='dimension' type='nominal' />
+            <column-instance column='[value]' derivation='None' name='[none:value:nk]' pivot='key' type='nominal' />
+            <column datatype='string' name='[note]' role='dimension' type='nominal' />
+            <column-instance column='[note]' derivation='None' name='[none:note:nk]' pivot='key' type='nominal' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Text' />
+            <encodings>
+              <text column='[federated.irp_t4].[none:note:nk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>([federated.irp_t4].[none:area:nk] / [federated.irp_t4].[none:metric:nk] / [federated.irp_t4].[none:value:nk])</rows>
+        <cols />
+      </table>
+    </worksheet>
+  </worksheets>
+  <windows source-height='30'>
+    <window class='worksheet' name="1 객단가 격차">
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+      </cards>
+    </window>
+    <window class='worksheet' name="2 불편 히트맵">
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+      </cards>
+    </window>
+    <window class='worksheet' name="3 기회">
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+      </cards>
+    </window>
+    <window class='worksheet' name="4 관리">
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+      </cards>
+    </window>
+  </windows>
+</workbook>

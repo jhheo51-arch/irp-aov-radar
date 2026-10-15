@@ -80,4 +80,4 @@ python scripts/build_aov.py
 - [x] 리뷰 분류 (여정 단계 × 불편 유형)와 표본 50건 검수
 - [x] Tableau용 데이터 4종 ([`data/tableau/`](data/tableau)) 과 [제작 가이드](docs/tableau-build-guide.md)
 - [ ] Tableau Public 대시보드 공개
-- [ ] 개선 제안서
+- [x] [개선 제안서 초안](docs/proposal.md)

@@ -64,7 +64,7 @@ class TableParser(HTMLParser):
 
 def fetch(unit_id, pen_id):
     body = urllib.parse.urlencode({"statsId": 4, "unitId": unit_id, "penId": pen_id}).encode()
-    req = urllib.request.Request(URL, data=body, headers={"User-Agent": "Mozilla/5.0 (irp-aov-radar research)"})
+    req = urllib.request.Request(URL, data=body, headers={"User-Agent": "Mozilla/5.0 (irp-growth-radar research)"})
     with urllib.request.urlopen(req, timeout=60) as res:
         return res.read().decode("utf-8", errors="replace")
 

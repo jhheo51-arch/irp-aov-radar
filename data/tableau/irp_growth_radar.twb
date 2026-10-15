@@ -324,14 +324,14 @@
     </worksheet>
   </worksheets>
   <dashboards>
-    <dashboard name="IRP 객단가 레이더">
+    <dashboard name="IRP 계좌 성장 레이더">
       <style />
       <size maxheight='1000' maxwidth='1200' minheight='1000' minwidth='1200' />
       <zones>
       <zone h='100000' id='1' type-v2='layout-basic' w='100000' x='0' y='0'>
         <zone h='5000' id='2' type-v2='text' w='100000' x='0' y='0'>
           <formatted-text>
-            <run fontsize='20' bold='true'>IRP 객단가 레이더</run>
+            <run fontsize='20' bold='true'>IRP 계좌 성장 레이더</run>
           </formatted-text>
         </zone>
         <zone h='6000' id='3' type-v2='text' w='100000' x='0' y='5000'>
@@ -397,7 +397,7 @@
         </edge>
       </cards>
     </window>
-    <window class='dashboard' maximized='true' name="IRP 객단가 레이더">
+    <window class='dashboard' maximized='true' name="IRP 계좌 성장 레이더">
       <viewpoints>
         <viewpoint name="1 객단가 격차" />
         <viewpoint name="2 불편 히트맵" />

@@ -1,8 +1,8 @@
-# IRP 객단가 레이더
+# IRP 계좌 성장 레이더
 
 IRP 가입자는 많은데 계좌는 작은 이유를 **금감원 공시와 앱 리뷰로 찾고**, 고객이 막히는 단계를 디지털 서비스 개선안으로 잇는 분석 프로젝트입니다.
 
-[개선 제안서](docs/proposal.md) | [화면 시제품](https://jhheo51-arch.github.io/irp-aov-radar/prototype/) | [대시보드 이미지](docs/images/dashboard.png) | [Tableau 통합문서](data/tableau/irp_aov_radar.twb) | [대시보드 제작 가이드](docs/tableau-build-guide.md)
+[개선 제안서](docs/proposal.md) | [화면 시제품](https://jhheo51-arch.github.io/irp-growth-radar/prototype/) | [대시보드 이미지](docs/images/dashboard.png) | [Tableau 통합문서](data/tableau/irp_growth_radar.twb) | [대시보드 제작 가이드](docs/tableau-build-guide.md)
 
 ## 30초 요약
 
@@ -16,7 +16,7 @@ IRP 가입자는 많은데 계좌는 작은 이유를 **금감원 공시와 앱 
 
 ## 대시보드
 
-![IRP 객단가 레이더 대시보드](docs/images/dashboard.png)
+![IRP 계좌 성장 레이더 대시보드](docs/images/dashboard.png)
 
 - 화면 1: IRP 계약 5만 건 이상 증권사 7곳. 주황 점이 한국투자증권입니다.
 - 화면 2: 불편 유형 머리글은 줄임말입니다. 기능 = 기능 부재, 안내 = 정보 부족, 절차 = 절차·서류·대면 요구, 비용 = 수수료·비용.
@@ -80,7 +80,7 @@ IRP 가입자는 많은데 계좌는 작은 이유를 **금감원 공시와 앱 
 2. **연금 정기 적립** (정기배송): 연금계좌 자동매수, 고객이 지정한 상품으로 대기자금 운용
 3. **비교형 상품 탐색** (상품 큐레이션): 공시 정보 기반 비교까지만. 맞춤 추천은 규제 확인 뒤
 
-**제안 ① 화면 시제품.** [웹에서 바로 열기](https://jhheo51-arch.github.io/irp-aov-radar/prototype/) (가상 데이터, 코드는 [`prototype/index.html`](prototype/index.html)). 평가금액은 한국투자증권 IRP 계약 1건당 평균(약 1,572만 원)에 맞춘 가상 고객입니다.
+**제안 ① 화면 시제품.** [웹에서 바로 열기](https://jhheo51-arch.github.io/irp-growth-radar/prototype/) (가상 데이터, 코드는 [`prototype/index.html`](prototype/index.html)). 평가금액은 한국투자증권 IRP 계약 1건당 평균(약 1,572만 원)에 맞춘 가상 고객입니다.
 
 ![연금 성장 리포트 시제품](docs/images/prototype.png)
 

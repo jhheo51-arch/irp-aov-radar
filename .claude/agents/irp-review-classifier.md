@@ -1,6 +1,6 @@
 ---
 name: irp-review-classifier
-description: IRP 객단가 레이더 프로젝트에서 증권 앱 연금 리뷰 JSONL 묶음을 '여정 단계 × 불편 유형'(프롬프트 v1)으로 분류해 라벨 JSONL을 쓴다. 입력·출력 파일 경로만 주면 된다.
+description: IRP 계좌 성장 레이더 프로젝트에서 증권 앱 연금 리뷰 JSONL 묶음을 '여정 단계 × 불편 유형'(프롬프트 v1)으로 분류해 라벨 JSONL을 쓴다. 입력·출력 파일 경로만 주면 된다.
 tools: Read, Write, Bash
 model: sonnet
 ---

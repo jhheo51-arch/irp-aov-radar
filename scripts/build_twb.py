@@ -1,6 +1,6 @@
 """data/tableau/의 CSV 4개로 Tableau 통합문서(.twb)를 만든다.
 
-출력: data/tableau/irp_aov_radar.twb
+출력: data/tableau/irp_growth_radar.twb
 시트 4개와 대시보드(배치, 제목, 한글 필드명, 색, 레이블)가 들어 있다.
 이미지 내보내기와 Tableau Public 저장만 Tableau에서 직접 한다(docs/tableau-build-guide.md).
 """
@@ -11,9 +11,9 @@ from xml.sax.saxutils import escape, quoteattr
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data" / "tableau"
-OUT = DATA / "irp_aov_radar.twb"
+OUT = DATA / "irp_growth_radar.twb"
 
-DASHBOARD = "IRP 객단가 레이더"
+DASHBOARD = "IRP 계좌 성장 레이더"
 KIS_ORANGE = "#E8541F"
 
 # 원본 이름 -> (CSV 파일, 차원으로 둘 숫자 열)

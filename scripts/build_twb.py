@@ -28,7 +28,7 @@ SOURCES = {
 CAPTIONS = {
     "provider": "증권사", "year": "연도", "contracts": "IRP 계약 수(건)", "reserve_100m_krw": "적립금(억 원)",
     "reserve_per_contract_10k_krw": "계약 1건당 적립금(만 원)", "market_avg_per_contract_10k_krw": "전 업권 평균(만 원)",
-    "highlight": "구분", "company": "증권사", "stage_label": "여정 단계", "pain_label": "불편 유형",
+    "highlight": "구분", "kis_flag": "한국투자증권", "company": "증권사", "stage_label": "여정 단계", "pain_label": "불편 유형",
     "reviews": "불편 리뷰(건)", "lever_label": "커머스 방식", "pain_reviews_3co": "3사 불편 리뷰(건)",
     "share_label": "비중", "meaning": "의미", "example_requests": "고객 요청 예", "top_pain_type": "가장 많은 불편",
     "pain_reviews_kis": "한국투자증권(건)", "area": "영역", "metric": "항목", "value": "값", "note": "설명",
@@ -39,9 +39,9 @@ SHEETS = [
     {
         "name": "1 객단가 격차", "source": "t1", "mark": "Circle",
         "cols": [("sum", "contracts")], "rows": [("sum", "reserve_per_contract_10k_krw")],
-        "color": ("none", "highlight"), "size": ("sum", "reserve_100m_krw"), "text": ("none", "provider"),
-        "filter": ("year", "2025"),
-        "palette": {"한국투자증권": KIS_ORANGE, "미래에셋증권": "#4C78A8", "삼성증권": "#72B7B2", "기타 증권사": "#C9CED6"},
+        # 범주형 색 지정은 Tableau가 적용하지 않아, 한국투자증권만 1인 측정값을 순차 색상으로 칠한다
+        "color": ("sum", "kis_flag"), "size": ("sum", "reserve_100m_krw"), "text": ("none", "provider"),
+        "filter": ("year", "2025"), "sequential": "orange_10_0",
     },
     {
         "name": "2 불편 히트맵", "source": "t2", "mark": "Square",
@@ -56,8 +56,8 @@ SHEETS = [
     },
     {
         "name": "4 관리", "source": "t4", "mark": "Text",
-        "rows": [("none", "area"), ("none", "metric"), ("none", "value")], "cols": [],
-        "text": ("none", "note"),
+        "rows": [("none", "area"), ("none", "metric")], "cols": [],
+        "text": ("none", "value"), "lod": [("none", "note")],
     },
 ]
 
@@ -235,7 +235,7 @@ def dashboard_xml():
                 "미래에셋증권(3,736만 원)의 42%, 전 업권 평균(1,858만 원)보다 낮습니다. "
                 "증권 3사 연금 리뷰의 불편 59%는 가입 이후 단계에 몰려 있습니다.")
     footer = ("출처: 금융감독원 통합연금포털 연금통계(2025년 말), 구글 플레이 공개 리뷰(증권 3사 연금 관련 349건). "
-              "화면 1은 IRP 계약 5만 건 이상 증권사, 화면 2·3은 3사 합계입니다. "
+              "화면 1은 IRP 계약 5만 건 이상 증권사(주황: 한국투자증권), 화면 2·3은 3사 합계입니다. "
               "리뷰 원문은 공개하지 않으며, 투자 권유가 아닌 서비스 기획 분석입니다.")
     grid = [(SHEETS[0]["name"], 0, 11000), (SHEETS[1]["name"], 50000, 11000),
             (SHEETS[2]["name"], 0, 53000), (SHEETS[3]["name"], 50000, 53000)]

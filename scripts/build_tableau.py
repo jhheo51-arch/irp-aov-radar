@@ -20,16 +20,19 @@ MIN_CONTRACTS = 50_000
 STAGE_ORDER = ["가입·계좌개설", "첫 납입·입금", "정기 납입·자동투자", "상품 선택·운용", "수익률·잔고 조회",
                "타사 연금 이전", "세액공제·서류", "인출·해지·수령", "연금 일반(단계 불명)"]
 PAIN_ORDER = ["오류·장애", "화면·사용성", "기능 부재", "정보 부족", "절차·서류·대면 요구", "수수료·비용", "상품·수익"]
+# 히트맵 열 머리글이 잘리지 않도록 쓰는 짧은 이름
+PAIN_SHORT = {"오류·장애": "오류", "화면·사용성": "화면", "기능 부재": "기능부재", "정보 부족": "정보부족",
+              "절차·서류·대면 요구": "절차", "수수료·비용": "수수료", "상품·수익": "상품"}
 
 # 여정 단계 -> (커머스 방식, 객단가와의 관계)
 LEVERS = {
-    "가입·계좌개설": ("결제 단계 이탈 줄이기", "첫 계좌를 여는 순간의 마찰"),
+    "가입·계좌개설": ("결제 이탈 방지", "첫 계좌를 여는 순간의 마찰"),
     "첫 납입·입금": ("첫 구매 전환", "개설 후 첫 돈이 들어오는가"),
     "정기 납입·자동투자": ("정기배송", "매달 자동으로 쌓이는가"),
     "상품 선택·운용": ("상품 큐레이션", "넣은 돈을 굴릴 상품을 쉽게 고르는가"),
     "수익률·잔고 조회": ("마이페이지·재방문", "내 계좌가 커지는 것이 보이는가"),
     "타사 연금 이전": ("장바구니 합치기", "다른 곳의 연금을 한곳으로 모으는가"),
-    "세액공제·서류": ("영수증·증빙 셀프서비스", "연말에 다시 찾아올 이유"),
+    "세액공제·서류": ("증빙 셀프서비스", "연말에 다시 찾아올 이유"),
     "인출·해지·수령": ("해지 방어", "돈이 빠져나가는 순간"),
 }
 
@@ -65,6 +68,7 @@ def build_aov():
             "reserve_per_contract_10k_krw": round(float(r["reserve_per_contract_krw"]) / 10_000),
             "market_avg_per_contract_10k_krw": round(reserve * 100_000_000 / contracts / 10_000),
             "highlight": r["provider"] if r["provider"] in FOCUS else "기타 증권사",
+            "kis_flag": 1 if r["provider"] == "한국투자증권" else 0,  # 색 강조용 (한국투자증권만 진하게)
         })
     # 계약 수가 아주 적은 소형사는 1건당 적립금이 튀어 축을 왜곡하므로 2025년 5만 건 이상인 회사만 남긴다
     major = {r["provider"] for r in out if r["year"] == "2025" and r["contracts"] >= MIN_CONTRACTS}
@@ -80,7 +84,7 @@ def build_heatmap():
         stage_no, pain_no = STAGE_ORDER.index(r["journey_stage"]) + 1, PAIN_ORDER.index(r["pain_type"]) + 1
         # 번호를 붙인 라벨은 Tableau에서 별도 정렬 설정 없이 여정·불편 순서대로 놓이게 한다
         out.append({**r, "stage_order": stage_no, "pain_order": pain_no,
-                    "stage_label": f"{stage_no}. {r['journey_stage']}", "pain_label": f"{pain_no}. {r['pain_type']}"})
+                    "stage_label": f"{stage_no}. {r['journey_stage']}", "pain_label": f"{pain_no} {PAIN_SHORT[r['pain_type']]}"})
     write("t2_heatmap.csv", list(out[0]), out)
 
 
@@ -109,17 +113,17 @@ def build_opportunities(labels):
 def build_quality(labels):
     pains = [r for r in labels if r["journey_stage"] != "연금 무관" and r["pain_type"] != "불편 없음(칭찬·중립)"]
     out = [
-        {"area": "공시 데이터", "metric": "수집 합계와 금감원 공식 합계의 최대 차이", "value": "0.25%", "note": "IRP·DC 적립금과 계약 수, 2025년 말 기준"},
+        {"area": "공시 데이터", "metric": "공식 합계 대조 오차", "value": "0.25%", "note": "IRP·DC 적립금과 계약 수, 2025년 말 기준"},
         {"area": "공시 데이터", "metric": "기준일", "value": "2025년 말", "note": "금감원 통합연금포털 연금통계"},
         {"area": "공시 데이터", "metric": "표기 원칙", "value": "계약 1건당", "note": "계약 수는 계좌 수이므로 '1인당'으로 쓰지 않음"},
-        {"area": "리뷰 데이터", "metric": "수집 리뷰 / 연금 관련", "value": "33,667 / 349", "note": "구글 플레이 공개 리뷰, 작성자 정보 미수집"},
-        {"area": "리뷰 데이터", "metric": "분석 대상 불편 리뷰", "value": str(len(pains)), "note": "연금 무관·칭찬 제외"},
-        {"area": "리뷰 데이터", "metric": "한국투자증권 불편 리뷰", "value": str(sum(r['company'] == '한국투자증권' for r in pains)), "note": "표본이 작아 3사 비교의 보조 지표로만 사용"},
-        {"area": "AI 분류", "metric": "표본 검수 일치율 (여정 단계 / 불편 유형)", "value": "96% / 100%", "note": "무작위 50건, 별도 AI 검수자"},
+        {"area": "리뷰 데이터", "metric": "수집 / 연금 리뷰", "value": "33,667 / 349", "note": "구글 플레이 공개 리뷰, 작성자 정보 미수집"},
+        {"area": "리뷰 데이터", "metric": "분석한 불편 리뷰", "value": str(len(pains)), "note": "연금 무관·칭찬 제외"},
+        {"area": "리뷰 데이터", "metric": "한투 불편 리뷰", "value": str(sum(r['company'] == '한국투자증권' for r in pains)), "note": "표본이 작아 3사 비교의 보조 지표로만 사용"},
+        {"area": "AI 분류", "metric": "검수 일치율(단계/유형)", "value": "96% / 100%", "note": "무작위 50건, 별도 AI 검수자"},
         {"area": "AI 분류", "metric": "프롬프트 버전", "value": "v1", "note": "결과 파일에 모델·버전 기록"},
         {"area": "보안·개인정보", "metric": "공개 범위", "value": "집계값만", "note": "리뷰 원문·근거 인용은 GitHub와 Tableau Public에 올리지 않음"},
-        {"area": "보안·개인정보", "metric": "개인정보 포함 리뷰 처리", "value": "1건 제외", "note": "앱 리뷰가 아닌 개인 글"},
-        {"area": "보안·개인정보", "metric": "내부 도입 시 전제", "value": "내부망 배치", "note": "고객 계좌 데이터 결합 시 개인신용정보 → 망분리 예외 범위 확인 필요"},
+        {"area": "보안·개인정보", "metric": "개인정보 리뷰", "value": "1건 제외", "note": "앱 리뷰가 아닌 개인 글"},
+        {"area": "보안·개인정보", "metric": "내부 도입 전제", "value": "내부망 배치", "note": "고객 계좌 데이터 결합 시 개인신용정보 → 망분리 예외 범위 확인 필요"},
     ]
     areas = list(dict.fromkeys(r["area"] for r in out))
     for i, r in enumerate(out, 1):

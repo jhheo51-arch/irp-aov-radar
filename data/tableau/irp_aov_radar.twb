@@ -113,6 +113,7 @@
             <column datatype='string' name="metric" ordinal='1' />
             <column datatype='string' name="value" ordinal='2' />
             <column datatype='string' name="note" ordinal='3' />
+            <column datatype='string' name="blank" ordinal='4' />
           </columns>
         </relation>
       </connection>
@@ -120,6 +121,7 @@
       <column caption="항목" datatype='string' name='[metric]' role='dimension' type='nominal' />
       <column caption="값" datatype='string' name='[value]' role='dimension' type='nominal' />
       <column caption="설명" datatype='string' name='[note]' role='dimension' type='nominal' />
+      <column caption=" " datatype='string' name='[blank]' role='dimension' type='nominal' />
     </datasource>
   </datasources>
   <worksheets>
@@ -290,6 +292,8 @@
             <column-instance column='[metric]' derivation='None' name='[none:metric:nk]' pivot='key' type='nominal' />
             <column caption="값" datatype='string' name='[value]' role='dimension' type='nominal' />
             <column-instance column='[value]' derivation='None' name='[none:value:nk]' pivot='key' type='nominal' />
+            <column caption=" " datatype='string' name='[blank]' role='dimension' type='nominal' />
+            <column-instance column='[blank]' derivation='None' name='[none:blank:nk]' pivot='key' type='nominal' />
             <column caption="설명" datatype='string' name='[note]' role='dimension' type='nominal' />
             <column-instance column='[note]' derivation='None' name='[none:note:nk]' pivot='key' type='nominal' />
           </datasource-dependencies>
@@ -303,7 +307,7 @@
             </view>
             <mark class='Text' />
             <encodings>
-              <text column='[federated.irp_t4].[none:value:nk]' />
+              <text column='[federated.irp_t4].[none:blank:nk]' />
               <lod column='[federated.irp_t4].[none:note:nk]' />
             </encodings>
             <style>
@@ -314,7 +318,7 @@
             </style>
           </pane>
         </panes>
-        <rows>([federated.irp_t4].[none:area:nk] / [federated.irp_t4].[none:metric:nk])</rows>
+        <rows>([federated.irp_t4].[none:area:nk] / [federated.irp_t4].[none:metric:nk] / [federated.irp_t4].[none:value:nk])</rows>
         <cols />
       </table>
     </worksheet>

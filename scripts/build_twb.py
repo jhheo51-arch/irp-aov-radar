@@ -31,7 +31,7 @@ CAPTIONS = {
     "highlight": "구분", "kis_flag": "한국투자증권", "company": "증권사", "stage_label": "여정 단계", "pain_label": "불편 유형",
     "reviews": "불편 리뷰(건)", "lever_label": "커머스 방식", "pain_reviews_3co": "3사 불편 리뷰(건)",
     "share_label": "비중", "meaning": "의미", "example_requests": "고객 요청 예", "top_pain_type": "가장 많은 불편",
-    "pain_reviews_kis": "한국투자증권(건)", "area": "영역", "metric": "항목", "value": "값", "note": "설명",
+    "pain_reviews_kis": "한국투자증권(건)", "area": "영역", "metric": "항목", "value": "값", "note": "설명", "blank": " ",
 }
 
 # 시트 정의: 열/행 선반, 마크, 인코딩, 필터, 색.  필드 표기: (집계, 원본 열)  집계 none = 차원
@@ -56,8 +56,8 @@ SHEETS = [
     },
     {
         "name": "4 관리", "source": "t4", "mark": "Text",
-        "rows": [("none", "area"), ("none", "metric")], "cols": [],
-        "text": ("none", "value"), "lod": [("none", "note")],
+        "rows": [("none", "area"), ("none", "metric"), ("none", "value")], "cols": [],
+        "text": ("none", "blank"), "lod": [("none", "note")],
     },
 ]
 
@@ -71,6 +71,8 @@ def infer_type(values):
             return True
         except ValueError:
             return False
+    if not any(values):  # 값이 모두 비어 있으면 문자열로 본다 (빈 텍스트 열)
+        return "string"
     if ok(int):
         return "integer"
     if ok(float):

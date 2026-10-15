@@ -1,1 +1,2 @@
 google-play-scraper==1.2.7
+anthropic==1.14.0

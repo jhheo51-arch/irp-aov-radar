@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>연금 성장 리포트 시제품</title>
+<meta name="description" content="IRP 객단가 레이더 제안 ① — 가입 이후 고객이 계좌가 커지는 과정을 보고 추가 납입을 결정하도록 돕는 화면 시제품. 가상 데이터.">
+<style>
+  :root {
+    --bg: #eef1f6; --phone: #ffffff; --ink: #18202c; --sub: #5b6676; --line: #e3e8ef;
+    --accent: #3b5bdb; --accent-soft: #e8edff; --up: #d6452f; --down: #2f6fd6; --good: #1e8a5a;
+    --warn-bg: #fff6e5; --warn-ink: #8a5a00; --note-bg: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f131a; --phone: #171c25; --ink: #e8ecf2; --sub: #9aa5b5; --line: #2a3240;
+      --accent: #7c95ff; --accent-soft: #232c48; --warn-bg: #2b2414; --warn-ink: #f0c36a; --note-bg: #171c25;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif; }
+  .wrap { display: flex; gap: 32px; justify-content: center; align-items: flex-start; padding: 32px 16px; flex-wrap: wrap; }
+  .phone { width: 375px; max-width: 100%; background: var(--phone); border-radius: 28px; box-shadow: 0 12px 40px rgba(20,30,60,.12); overflow: hidden; }
+  .top { padding: 18px 20px 8px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--sub); }
+  .badge { font-size: 11px; background: var(--warn-bg); color: var(--warn-ink); padding: 3px 8px; border-radius: 999px; }
+  header { padding: 4px 20px 16px; }
+  header h1 { margin: 0 0 4px; font-size: 20px; }
+  header p { margin: 0; color: var(--sub); font-size: 13px; }
+  .card { margin: 0 16px 14px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; }
+  .label { font-size: 12px; color: var(--sub); margin-bottom: 4px; }
+  .big { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+  .row { display: flex; justify-content: space-between; font-size: 13px; margin-top: 8px; }
+  .row b { font-weight: 600; }
+  .up { color: var(--up); } .down { color: var(--down); }
+  /* 0을 기준선으로: 위 칸에는 양수 막대, 아래 칸에는 음수 막대 */
+  .bars { display: flex; gap: 8px; height: 150px; margin-top: 12px; }
+  .bar { flex: 1; display: flex; flex-direction: column; font-size: 11px; }
+  .bar .pos { flex: 2; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; border-bottom: 1px solid var(--sub); }
+  .bar .neg { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; }
+  .bar span.v { font-weight: 600; margin: 3px 0; white-space: nowrap; }
+  .bar i { display: block; width: 100%; background: var(--accent); }
+  .bar .pos i { border-radius: 6px 6px 0 0; }
+  .bar .neg i { background: var(--down); opacity: .6; border-radius: 0 0 6px 6px; }
+  .bar.now .pos i { background: var(--up); }
+  .years { display: flex; gap: 8px; font-size: 11px; color: var(--sub); margin-top: 6px; }
+  .years span { flex: 1; text-align: center; }
+  .progress { height: 12px; background: var(--line); border-radius: 999px; overflow: hidden; margin: 10px 0 6px; position: relative; }
+  .progress i { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 999px; }
+  .progress .paid { background: var(--accent); }
+  .progress .plan { background: var(--accent); opacity: .35; }
+  .small { font-size: 12px; color: var(--sub); }
+  .hl { background: var(--accent-soft); border-radius: 12px; padding: 12px; margin-top: 12px; font-size: 13px; line-height: 1.55; }
+  .hl b { color: var(--accent); }
+  input[type=range] { width: 100%; accent-color: var(--accent); }
+  .seg { display: flex; gap: 6px; margin-top: 8px; }
+  .seg button { flex: 1; padding: 8px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: var(--ink); font-size: 12px; cursor: pointer; }
+  .seg button[aria-pressed=true] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .cta { display: flex; gap: 8px; margin: 4px 16px 12px; }
+  .cta button { flex: 1; padding: 14px; border-radius: 14px; font-size: 14px; font-weight: 600; border: 0; cursor: pointer; }
+  .cta .primary { background: var(--accent); color: #fff; }
+  .cta .ghost { background: var(--accent-soft); color: var(--accent); }
+  .legal { margin: 0 16px 20px; font-size: 11px; color: var(--sub); line-height: 1.5; }
+  .sheet { display: none; margin: 0 16px 16px; padding: 16px; border-radius: 16px; border: 1px solid var(--accent); }
+  .sheet.open { display: block; }
+  .sheet h3 { margin: 0 0 8px; font-size: 15px; }
+  .sheet select { width: 100%; padding: 8px; border-radius: 10px; border: 1px solid var(--line); background: var(--phone); color: var(--ink); margin-top: 6px; }
+  .toast { margin-top: 10px; font-size: 13px; color: var(--good); display: none; }
+  .notes { width: 380px; max-width: 100%; background: var(--note-bg); border-radius: 20px; padding: 20px 22px; border: 1px solid var(--line); font-size: 14px; line-height: 1.6; }
+  .notes h2 { font-size: 16px; margin: 0 0 8px; }
+  .notes h3 { font-size: 14px; margin: 18px 0 6px; }
+  .notes ul { margin: 0; padding-left: 18px; }
+  .notes code { font-size: 12px; background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; }
+  .notes .src { font-size: 12px; color: var(--sub); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <main class="phone" aria-label="연금 성장 리포트 화면">
+    <div class="top"><span>내 연금</span><span class="badge">가상 데이터 · 시제품</span></div>
+    <header>
+      <h1>연금 성장 리포트</h1>
+      <p>개인형 IRP · 2026년 10월 기준</p>
+    </header>
+
+    <section class="card" aria-labelledby="t-balance">
+      <div class="label" id="t-balance">평가금액</div>
+      <div class="big">15,720,000원</div>
+      <div class="row"><span>누적 납입</span><b>13,850,000원</b></div>
+      <div class="row"><span>누적 손익</span><b class="up">+1,870,000원 (+13.50%)</b></div>
+    </section>
+
+    <section class="card" aria-labelledby="t-years">
+      <div class="label" id="t-years">연도별 수익률</div>
+      <div class="bars" id="bars"></div>
+      <div class="years" id="years"></div>
+      <p class="small" style="margin:8px 0 0">2026년은 1월 1일부터 오늘까지입니다. 수익률은 소수 둘째 자리까지 표시합니다.</p>
+    </section>
+
+    <section class="card" aria-labelledby="t-tax">
+      <div class="label" id="t-tax">올해 세액공제 한도 (연금저축 + IRP 합산 900만 원)</div>
+      <div class="row" style="margin-top:0"><span>올해 납입</span><b id="paidText"></b></div>
+      <div class="progress" aria-hidden="true"><i class="plan" id="planBar"></i><i class="paid" id="paidBar"></i></div>
+      <div class="row" style="margin-top:0"><span class="small">남은 한도 <b id="leftText"></b></span><span class="small" id="dday"></span></div>
+
+      <div class="hl" id="insight"></div>
+
+      <label class="small" for="extra" style="display:block;margin-top:14px">연말까지 더 넣을 금액: <b id="extraText"></b></label>
+      <input id="extra" type="range" min="0" max="6000000" step="100000" value="3000000">
+      <div class="small">총급여 기준 (공제율)</div>
+      <div class="seg" role="group" aria-label="총급여 기준">
+        <button type="button" data-rate="0.165" aria-pressed="true">5,500만 원 이하 · 16.5%</button>
+        <button type="button" data-rate="0.132" aria-pressed="false">5,500만 원 초과 · 13.2%</button>
+      </div>
+    </section>
+
+    <div class="cta">
+      <button class="ghost" type="button" id="openPlan">매월 자동 적립</button>
+      <button class="primary" type="button" id="addNow">지금 추가 납입</button>
+    </div>
+
+    <section class="sheet" id="planSheet" aria-labelledby="t-plan">
+      <h3 id="t-plan">매월 자동 적립 설정</h3>
+      <div class="small">매월 <b id="monthlyText"></b>을 <span id="dayText">25일</span>에 IRP로 옮깁니다.</div>
+      <input id="monthly" type="range" min="100000" max="1500000" step="50000" value="500000" aria-label="월 적립 금액">
+      <div class="small" style="margin-top:6px">적립 후 바로 살 상품 (고객이 직접 지정)</div>
+      <select aria-label="자동 매수 상품">
+        <option>직접 고른 상품 A (위험등급 2)</option>
+        <option>직접 고른 상품 B (위험등급 3)</option>
+        <option>지정 안 함 — 대기자금으로 보관</option>
+      </select>
+      <div class="hl" id="planInsight"></div>
+      <div class="toast" id="toast">자동 적립이 설정됐습니다 (시제품이라 실제로 실행되지 않습니다).</div>
+      <div class="cta" style="margin:12px 0 0"><button class="primary" type="button" id="savePlan">설정하기</button></div>
+    </section>
+
+    <p class="legal">이 화면은 서비스 기획 시제품이며 모든 금액과 수익률은 가상입니다. 세액공제액은 연금저축·IRP 합산 연 900만 원 한도, 지방소득세 포함 공제율로 단순 계산한 예상치입니다. 과거 수익률이 미래 수익을 보장하지 않으며, 특정 상품을 권유하지 않습니다.</p>
+  </main>
+
+  <aside class="notes" aria-label="기획 메모">
+    <h2>이 화면이 푸는 문제</h2>
+    <p>IRP 계약 수는 많은데 계약 1건당 적립금이 작습니다. 증권 3사 연금 리뷰의 불편 59%가 가입 이후 단계였고, 커머스 방식으로 보면 <b>마이페이지·재방문(37%)</b>이 1위였습니다.</p>
+
+    <h3>리뷰 요청과 화면의 대응</h3>
+    <ul>
+      <li>연도별 수익률을 볼 수 없다 → <b>연도별 수익률 막대</b></li>
+      <li>수익률 소수점이 0으로만 나온다 → <b>소수 둘째 자리 표시</b></li>
+      <li>연금계좌는 자동매수가 안 된다 → <b>매월 자동 적립 + 고객 지정 상품 매수</b></li>
+      <li>세액공제 확인서는 영업점에 가야 한다 → 다음 단계: 증빙 셀프서비스</li>
+    </ul>
+
+    <h3>객단가와의 연결</h3>
+    <p>남은 세액공제 한도와 마감까지 남은 날을 함께 보여 줘, 다시 들어올 이유(재방문)와 더 넣을 이유(추가 납입)를 한 화면에서 만듭니다. 정기 적립은 커머스의 정기배송에 해당합니다.</p>
+
+    <h3>측정할 이벤트</h3>
+    <ul>
+      <li><code>report_view</code> 리포트 월간 재방문율</li>
+      <li><code>extra_slider_change</code> 예상 환급액 확인</li>
+      <li><code>add_contribution_click</code> → 추가 납입 완료율</li>
+      <li><code>auto_plan_save</code> 정기 적립 설정 계좌 비율</li>
+    </ul>
+    <p class="small">핵심 지표는 IRP 계약 1건당 적립금입니다. 일부 고객에게 먼저 열어(A/B) 추가 납입률 차이를 확인한 뒤 확대합니다.</p>
+
+    <h3>규제·보안 경계</h3>
+    <ul>
+      <li>상품을 고르지 않습니다. 자동 매수는 고객이 지정한 상품만 실행합니다.</li>
+      <li>숫자는 원장 데이터를 고정 양식으로 보여 주며, AI가 수익률 문구를 만들지 않습니다.</li>
+      <li>실제 계좌 데이터는 개인신용정보이므로 내부망에서 처리합니다.</li>
+    </ul>
+    <p class="src">IRP 객단가 레이더 · 제안 ① 연금 성장 리포트 · 가상 데이터</p>
+  </aside>
+
+</div>
+
+<script>
+  // 가상 고객: 평가금액을 한국투자증권 IRP 계약 1건당 평균(약 1,572만 원)에 맞췄다.
+  const YEARS = [["2021", 3.10], ["2022", -8.42], ["2023", 9.18], ["2024", 11.63], ["2025", 14.27], ["2026", 6.42]];
+  const LIMIT = 9000000;
+  const PAID = { irp: 1800000, pensionSavings: 1200000 };
+  let rate = 0.165;
+
+  const won = n => Math.round(n).toLocaleString("ko-KR") + "원";
+  const man = n => (Math.round(n / 10000)).toLocaleString("ko-KR") + "만 원";
+
+  function drawBars() {
+    const max = Math.max(...YEARS.map(([, v]) => Math.abs(v)));
+    const bars = document.getElementById("bars");
+    const years = document.getElementById("years");
+    YEARS.forEach(([y, v], i) => {
+      const now = i === YEARS.length - 1;
+      const sign = v > 0 ? "+" : "";
+      const label = `<span class="v ${v >= 0 ? "up" : "down"}">${sign}${v.toFixed(2)}%</span>`;
+      // 위 칸(높이 2)과 아래 칸(높이 1)의 비율에 맞춰 같은 축척으로 그린다
+      const pos = v >= 0 ? `${label}<i style="height:${Math.max(4, v / max * 60)}%"></i>` : "";
+      const neg = v < 0 ? `<i style="height:${Math.max(8, -v / max * 60 * 2)}%"></i>${label}` : "";
+      bars.insertAdjacentHTML("beforeend",
+        `<div class="bar${now ? " now" : ""}" title="${y}년 ${sign}${v.toFixed(2)}%">` +
+        `<div class="pos">${pos}</div><div class="neg">${neg}</div></div>`);
+      years.insertAdjacentHTML("beforeend", `<span>${now ? "올해" : y}</span>`);
+    });
+  }
+
+  function daysLeft() {
+    const now = new Date();
+    const end = new Date(now.getFullYear(), 11, 31);
+    return Math.max(0, Math.ceil((end - now) / 86400000));
+  }
+
+  function update() {
+    const paid = PAID.irp + PAID.pensionSavings;
+    const left = Math.max(0, LIMIT - paid);
+    const slider = document.getElementById("extra");
+    slider.max = left;
+    const extra = Math.min(Number(slider.value), left);
+    const refundNow = Math.min(paid, LIMIT) * rate;
+    const refundPlan = Math.min(paid + extra, LIMIT) * rate;
+
+    document.getElementById("paidText").textContent = `${man(paid)} / ${man(LIMIT)}`;
+    document.getElementById("leftText").textContent = man(left);
+    document.getElementById("dday").textContent = `연말까지 ${daysLeft()}일`;
+    document.getElementById("paidBar").style.width = (paid / LIMIT * 100) + "%";
+    document.getElementById("planBar").style.width = ((paid + extra) / LIMIT * 100) + "%";
+    document.getElementById("extraText").textContent = man(extra);
+    document.getElementById("insight").innerHTML =
+      `지금까지 넣은 금액으로 예상 환급은 <b>${won(refundNow)}</b>입니다.<br>` +
+      `연말까지 <b>${man(extra)}</b>을 더 넣으면 <b>${won(refundPlan)}</b>, 지금보다 <b>${won(refundPlan - refundNow)}</b> 더 돌려받습니다.`;
+
+    const monthly = Number(document.getElementById("monthly").value);
+    const months = Math.max(1, 12 - new Date().getMonth() - (new Date().getDate() > 25 ? 1 : 0));
+    const byYearEnd = Math.min(monthly * months, left);
+    document.getElementById("monthlyText").textContent = man(monthly);
+    document.getElementById("planInsight").innerHTML =
+      `연말까지 <b>${months}번</b> 적립되어 <b>${man(byYearEnd)}</b>이 채워집니다. ` +
+      (monthly * months >= left ? "올해 남은 공제 한도를 모두 채웁니다." : `남은 한도의 ${Math.round(byYearEnd / left * 100)}%입니다.`);
+  }
+
+  document.querySelectorAll(".seg button").forEach(button => button.addEventListener("click", () => {
+    document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", String(b === button)));
+    rate = Number(button.dataset.rate);
+    update();
+  }));
+  document.getElementById("extra").addEventListener("input", update);
+  document.getElementById("monthly").addEventListener("input", update);
+  document.getElementById("openPlan").addEventListener("click", () => {
+    const sheet = document.getElementById("planSheet");
+    sheet.classList.toggle("open");
+    if (sheet.classList.contains("open")) sheet.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+  document.getElementById("savePlan").addEventListener("click", () => { document.getElementById("toast").style.display = "block"; });
+  document.getElementById("addNow").addEventListener("click", () => alert("시제품입니다. 실제 납입 화면으로 이동하지 않습니다."));
+
+  drawBars();
+  update();
+</script>
+</body>
+</html>

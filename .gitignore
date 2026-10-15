@@ -8,3 +8,6 @@ data/raw/reviews/
 .venv/
 __pycache__/
 *.pyc
+
+# Tableau 자동 복구 파일
+*.twbr

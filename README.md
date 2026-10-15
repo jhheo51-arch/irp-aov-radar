@@ -2,7 +2,13 @@
 
 IRP 가입자는 많은데 계좌는 작은 이유를 공시 데이터와 앱 리뷰로 찾는 디지털 서비스 기획 프로젝트
 
-> 진행 중: 분석과 [개선 제안서](docs/proposal.md)는 완료했고, Tableau Public 대시보드는 공개 준비 중입니다.
+> 한국투자증권 IT/Digital(AI/디지털/정보보호) 지원 포트폴리오 · 2026년 10월 · 개인 프로젝트
+
+**한눈에 보기**
+- **문제:** 한국투자증권은 IRP 계약 수 증권업권 1위지만, 계약 1건당 적립금은 1,572만 원으로 미래에셋증권의 42%입니다.
+- **원인:** 증권 3사 연금 리뷰 349건을 AI로 분류한 결과, 불편의 59%가 가입 이후(수익률 조회, 상품 운용) 단계에 몰려 있습니다.
+- **제안:** 이커머스의 객단가 공식을 옮긴 [개선 제안서](docs/proposal.md) — 연금 성장 리포트, 연금 정기 적립, 비교형 상품 탐색.
+- **원칙:** 공식 합계 대조와 표본 교차 검수로 검증했고, 리뷰 원문과 개인정보는 공개하지 않습니다.
 
 ## 대시보드
 
@@ -82,12 +88,12 @@ python scripts/build_aov.py
 .venv/Scripts/python scripts/build_tableau.py
 ```
 
-## 진행 상황
+## 작업 내역
 
 - [x] 금감원 공시 수집과 합계 검증
 - [x] 계약 1건당 적립금 계산
 - [x] 앱 리뷰 수집 (전체 33,667건, 연금 관련 349건)
 - [x] 리뷰 분류 (여정 단계 × 불편 유형)와 표본 50건 검수
 - [x] Tableau용 데이터 4종 ([`data/tableau/`](data/tableau)) 과 [제작 가이드](docs/tableau-build-guide.md)
-- [ ] Tableau Public 대시보드 공개
+- [x] Tableau 대시보드 ([이미지](docs/images/dashboard.png), [통합문서](data/tableau/irp_aov_radar.twb))
 - [x] [개선 제안서 초안](docs/proposal.md)

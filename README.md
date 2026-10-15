@@ -35,6 +35,19 @@ IRP 가입자는 많은데 계좌는 작은 이유를 **금감원 공시와 앱 
 
 출처: 금융감독원 통합연금포털 연금통계(퇴직연금 사업자별 상세).
 
+**격차는 언제 벌어졌나.** 2017~2025년 추이를 보면 두 가지가 보입니다([`irp_trend.csv`](data/processed/irp_trend.csv)).
+
+| 계약 1건당 적립금 (전 업권 평균 대비) | 2017 | 2020 | 2021 | 2025 |
+|---|---:|---:|---:|---:|
+| 한국투자증권 | 782만 원 (1.48배) | 1,035만 원 (1.26배) | **838만 원 (0.86배)** | **1,572만 원 (0.85배)** |
+| 미래에셋증권 | 1,561만 원 (2.96배) | 2,253만 원 (2.74배) | 2,491만 원 (2.55배) | 3,736만 원 (2.01배) |
+| 삼성증권 | 3,300만 원 (6.25배) | 3,088만 원 (3.76배) | 1,622만 원 (1.66배) | 2,699만 원 (1.45배) |
+
+1. **2021년에 평균 아래로 내려갔고, 그 뒤로 올라오지 못했습니다.** 2021년 4월 삼성증권을 시작으로 증권사들이 IRP 수수료를 면제하며 계좌 유치 경쟁을 벌였고, 이해 한국투자증권 계약은 7.3만 건에서 16.2만 건으로 늘었습니다. 소액 계좌가 한꺼번에 들어오며 1건당 적립금이 전 업권 평균의 0.86배로 떨어졌고, 2025년에도 0.85배입니다. 같은 시기 계약이 급증한 삼성증권은 1.66배에서 1.45배로 평균 위를 지켰습니다.
+2. **지금 새로 늘어나는 계좌도 작습니다.** 2023~2025년 순증 1건당 적립금(추정)은 한국투자증권 평균 약 1,950만 원으로, 미래에셋증권(약 4,840만 원)과 삼성증권(약 4,070만 원)의 40~48%입니다. 예전의 소액 계좌만이 아니라 **지금 들어오는 계좌도 작게 들어와 작게 머무는 구조**입니다.
+
+순증 1건당 적립금은 (올해 적립금 − 작년 적립금) ÷ (올해 계약 수 − 작년 계약 수)입니다. 기존 계좌의 운용수익, 추가 납입, 해지가 섞이므로 실제 신규 계좌 평균과 같지 않으며, 회사 간 같은 방식으로 비교하는 용도로만 씁니다.
+
 ### 2. 문제 재정의: 방문자가 아니라 객단가의 문제
 
 방문자(가입자)는 이미 많으니, 이미 들어온 고객의 계좌를 키우는 쪽이 효과가 큽니다. 이커머스가 객단가를 올리는 방식을 연금 여정에 대응시켰습니다.
@@ -113,6 +126,7 @@ python -m venv .venv
 .venv/Scripts/python -m pip install -r requirements.txt
 .venv/Scripts/python scripts/collect_fss.py           # 금감원 공시 수집과 합계 검증
 .venv/Scripts/python scripts/build_aov.py             # 계약 1건당 적립금
+.venv/Scripts/python scripts/analyze_trend.py         # 연도별 추이, 순증 1건당 적립금
 .venv/Scripts/python scripts/collect_reviews.py       # 구글 플레이 리뷰 (원문은 data/raw/reviews, Git 제외)
 .venv/Scripts/python scripts/classify_reviews.py      # .env에 ANTHROPIC_API_KEY 필요
 .venv/Scripts/python scripts/summarize_reviews.py
@@ -127,6 +141,7 @@ python -m venv .venv
 | 문제, 근거, 제안 3개, 성공 지표, 보안 전제 | [개선 제안서](docs/proposal.md) |
 | 대시보드 구성과 다시 만드는 방법 | [대시보드 제작 가이드](docs/tableau-build-guide.md) |
 | 공시 원자료와 계산 결과 | [`data/raw/fss/`](data/raw/fss), [`data/processed/`](data/processed) |
+| 격차가 벌어진 시점 (연도별 추이) | [`scripts/analyze_trend.py`](scripts/analyze_trend.py), [`data/processed/irp_trend.csv`](data/processed/irp_trend.csv) |
 | 리뷰 분류 결과(원문 제외)와 집계 | [`data/processed/review_labels.csv`](data/processed/review_labels.csv), [`review_heatmap.csv`](data/processed/review_heatmap.csv) |
 | 분류 기준 (반복 분류용 에이전트 정의 포함) | [`scripts/classify_reviews.py`](scripts/classify_reviews.py), [`.claude/agents/irp-review-classifier.md`](.claude/agents/irp-review-classifier.md) |
 

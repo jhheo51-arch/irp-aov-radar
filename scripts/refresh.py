@@ -158,6 +158,7 @@ def main():
     run("summarize_reviews.py")
     run("build_tableau.py")
     run("build_twb.py")
+    run("check_public.py")  # 공개 전 점검을 통과해야 스냅샷을 남긴다
 
     today = date.today().isoformat()
     metrics = collect_metrics()

@@ -1,5 +1,7 @@
 # IRP 계좌 성장 레이더
 
+[![공개 전 점검](https://github.com/jhheo51-arch/irp-growth-radar/actions/workflows/public-check.yml/badge.svg)](https://github.com/jhheo51-arch/irp-growth-radar/actions/workflows/public-check.yml)
+
 IRP 가입자는 많은데 계좌는 작은 이유를 **금감원 공시와 앱 리뷰로 찾고**, 고객이 막히는 단계를 디지털 서비스 개선안으로 잇는 분석 프로젝트입니다.
 
 [개선 제안서](docs/proposal.md) | [화면 시제품](https://jhheo51-arch.github.io/irp-growth-radar/prototype/) | [대시보드 이미지](docs/images/dashboard.png) | [Tableau 통합문서](data/tableau/irp_growth_radar.twb) | [대시보드 제작 가이드](docs/tableau-build-guide.md)
@@ -13,7 +15,7 @@ IRP 가입자는 많은데 계좌는 작은 이유를 **금감원 공시와 앱 
 | 원인 | 증권 3사 연금 리뷰의 불편 **59%가 가입 이후**(수익률 조회, 상품 운용) 단계에 몰려 있다. 들어오기는 쉬운데 계좌를 키우기는 어렵다. |
 | 제안 | 내 연금이 커지는 과정과 올해 남은 세액공제 한도를 보여 주는 **연금 성장 리포트**를 1순위로, 연금 정기 적립과 비교형 상품 탐색을 뒤에 둔다. |
 | 핵심 흐름 | 공시로 격차 확인 → 앱 리뷰로 막히는 단계 찾기 → 이커머스 객단가 방식으로 개선안 → 같은 지표로 다시 재기 |
-| 보안 | 공개 통계와 공개 리뷰만 쓰고, 리뷰 원문·작성자 정보·API 키는 저장소 밖에 둔다. 고객 데이터를 붙이는 실제 도입은 망분리 조건에 맞춰 내부망을 전제로 설계했다. ([보안·개인정보 설계](#보안개인정보-설계)) |
+| 보안 | 공개 통계와 공개 리뷰만 쓰고, 리뷰 원문·작성자 정보·API 키는 저장소 밖에 둔다. push할 때마다 자동 점검이 이를 확인한다. 고객 데이터를 붙이는 실제 도입은 망분리 조건에 맞춰 내부망을 전제로 설계했다. ([보안·개인정보 설계](#보안개인정보-설계)) |
 | 북극성 지표 | **IRP 계약 1건당 적립금** (금감원 공시와 같은 정의라 경쟁사와 분기마다 비교 가능) |
 | 현재 상태 | v1 운영 중(2026-10-15 기준). 공시 분석, 리뷰 분류, 대시보드, 제안 ① [화면 시제품](https://jhheo51-arch.github.io/irp-growth-radar/prototype/)을 만들었고, 명령 하나로 갱신하며 날짜별 기록을 쌓습니다. **개선안의 실제 효과와 사용자 반응은 아직 측정 전** |
 
@@ -105,7 +107,7 @@ IRP 가입자는 많은데 계좌는 작은 이유를 **금감원 공시와 앱 
 
 ### 5. 운영하며 고도화
 
-갱신은 명령 하나로 합니다. 실행할 때마다 수집 → 공식 합계 검증 → 계산 → 대시보드 데이터·통합문서 재생성 → 스냅샷 저장 → 변경 기록이 순서대로 돌고, 한 단계라도 실패하면 스냅샷을 남기지 않고 멈춥니다.
+갱신은 명령 하나로 합니다. 실행할 때마다 수집 → 공식 합계 검증 → 계산 → 대시보드 데이터·통합문서 재생성 → 공개 전 점검 → 스냅샷 저장 → 변경 기록이 순서대로 돌고, 한 단계라도 실패하면 스냅샷을 남기지 않고 멈춥니다.
 
 ```bash
 .venv/Scripts/python scripts/refresh.py              # 공시 갱신 (API 키 불필요)
@@ -158,12 +160,43 @@ IRP 가입자는 많은데 계좌는 작은 이유를 **금감원 공시와 앱 
 | 증권사 시세의 무단 재배포 | 증권사 Open API 시세를 공개 웹 서비스로 보여 주지 않습니다. 제3자 서비스 제공은 제휴 대상이기 때문입니다. 이 프로젝트는 공개 통계와 공개 리뷰만 씁니다. |
 | 대시보드 원본 유출 | Tableau Public은 원본 데이터를 내려받을 수 있으므로 집계값만 올리고, 공개할 때는 다운로드 허용을 끕니다. |
 
-### 공개 전 점검 (2026-10-15)
+### 데이터 흐름과 경계
 
-저장소를 공개로 바꾸기 전에 다음을 확인했습니다.
-- 전체 커밋 기록에서 API 키·토큰 형식의 문자열과 민감 경로(`.env`, 리뷰 원문, 검수 표본)가 없음
-- 공개 파일과 리뷰 원문을 25자 조각 단위로 대조해 원문이 섞이지 않음 (0건)
-- README의 모든 링크가 열림
+```mermaid
+flowchart LR
+    subgraph NOW["지금: 공개 데이터만"]
+        direction LR
+        A["금감원 공시<br/>구글 플레이 리뷰"] --> B["내 PC<br/>리뷰 원문 · .env<br/>(Git 제외)"]
+        B --> C{"공개 전 점검<br/>check_public.py"}
+        C -- "집계·분류만 통과" --> D["GitHub 공개 저장소<br/>대시보드 이미지"]
+        C -. "원문·키는 차단" .-> B
+    end
+    subgraph LATER["실제 도입 시: 내부망 전제"]
+        direction LR
+        E["계좌 원장 데이터<br/>(개인신용정보)"] --> F["내부 AI 분류 모델"]
+        F --> G["사내 대시보드"]
+        E --> H["연금 성장 리포트 화면<br/>(고정 양식)"]
+        P["외부 공개 통계"] -- "반입만" --> F
+        E -. "외부 생성형 AI·SaaS로<br/>내보내지 않음" .-> X["외부망 ✕"]
+    end
+```
+
+- **지금:** 리뷰 원문과 API 키는 내 PC에만 있고, 공개 저장소로 나가는 길에는 점검 관문이 하나 있습니다. 집계와 분류 결과만 통과합니다.
+- **실제 도입 시:** 고객 계좌 데이터는 내부망 밖으로 나가지 않습니다. 외부 데이터는 들여오기만 하고, 분석과 AI 분류는 내부 모델로 합니다.
+
+### 공개 전 점검 (자동)
+
+[`scripts/check_public.py`](scripts/check_public.py)가 저장소에 올라갈 파일을 검사하고, 하나라도 걸리면 실패합니다. [GitHub Actions](.github/workflows/public-check.yml)가 push할 때마다 실행하고, `refresh.py`도 이 검사를 통과해야 스냅샷을 남깁니다.
+
+| 검사 | 내용 | 어디서 |
+|---|---|---|
+| 금지 경로 | `.env`, 리뷰 원문 폴더, 원문이 든 분류·검수 파일이 올라가 있지 않은가 | push마다, 갱신마다 |
+| 비밀 정보 | API 키·토큰·개인 키 형식의 문자열이 없는가 | push마다, 갱신마다 |
+| 금지 열 | 공개 CSV에 원문·근거 인용·작성자 정보 열이 없는가 | push마다, 갱신마다 |
+| 원문 조각 | 공개 파일에 리뷰 원문과 같은 25자 조각이 없는가 | 갱신마다 (원문은 내 PC에만 있어 CI에서는 제외) |
+| 커밋 기록 | 지난 커밋 전체에 비밀 정보가 남아 있지 않은가 (gitleaks) | push마다 |
+
+검사가 실제로 잡아내는지는 가짜 키, 원문 40자 인용, `content` 열이 든 CSV를 일부러 넣어 세 가지 모두 실패하는 것으로 확인했습니다. 저장소를 처음 공개하기 전(2026-10-15)에도 같은 기준으로 커밋 기록 전체를 점검했습니다.
 
 ### 실제 도입 시: 망분리와 금융 규제
 
@@ -186,6 +219,7 @@ v1 결과는 [`scripts/classify_reviews.py`](scripts/classify_reviews.py)의 프
 
 **확인한 것.**
 - 금감원 공시 수집 합계가 공식 합계와 0.25% 이내로 맞습니다.
+- 공개 전 점검이 가짜 키·원문 인용·금지 열을 모두 잡아내는 것을 시험했습니다.
 - 리뷰 분류는 허용값·누락·중복을 자동 검사하고, 표본 50건 교차 검수를 거쳤습니다. 공개 파일에 리뷰 원문 조각이 없는지 대조했습니다.
 - `refresh.py`를 실제로 실행해 스냅샷과 변경 기록이 생기는 것을 확인했고, 가짜 이전 스냅샷과 비교해 개선·악화 표시와 분류 기준 변경 경고가 나오는 것을 시험했습니다.
 - 시제품의 세액공제 계산(예: 300만 원 × 16.5% = 49.5만 원, 13.2% 선택 시 39.6만 원), 자동 적립 횟수 계산, 375px 화면에서 가로 넘침이 없는 것을 브라우저에서 확인했습니다.
@@ -215,6 +249,7 @@ python -m venv .venv
 .venv/Scripts/python scripts/summarize_reviews.py
 .venv/Scripts/python scripts/build_tableau.py
 .venv/Scripts/python scripts/build_twb.py             # Tableau 통합문서 생성
+.venv/Scripts/python scripts/check_public.py          # 공개 전 점검 (비밀 정보·원문 조각)
 ```
 
 ## 문서와 코드 안내
@@ -227,6 +262,7 @@ python -m venv .venv
 | 갱신 기록과 날짜별 지표 | [`docs/data-changelog.md`](docs/data-changelog.md), [`data/snapshots/`](data/snapshots), [`scripts/refresh.py`](scripts/refresh.py) |
 | 평균 아래로 내려간 시점 (연도별 추이) | [`scripts/analyze_trend.py`](scripts/analyze_trend.py), [`data/processed/irp_trend.csv`](data/processed/irp_trend.csv) |
 | 리뷰 분류 결과(원문 제외)와 집계 | [`data/processed/review_labels.csv`](data/processed/review_labels.csv), [`data/processed/review_heatmap.csv`](data/processed/review_heatmap.csv) |
+| 공개 전 점검과 자동 실행 설정 | [`scripts/check_public.py`](scripts/check_public.py), [`.github/workflows/public-check.yml`](.github/workflows/public-check.yml) |
 | 분류 기준 (반복 분류용 에이전트 정의 포함) | [`scripts/classify_reviews.py`](scripts/classify_reviews.py), [`.claude/agents/irp-review-classifier.md`](.claude/agents/irp-review-classifier.md) |
 
 ## 제작 방식

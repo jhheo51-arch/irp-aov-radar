@@ -118,7 +118,8 @@ def main():
         for p in problems:
             print("  " + p)
         sys.exit(1)
-    print("통과: 금지 경로·비밀 정보·금지 열·원문 조각 0건")
+    checked = "금지 경로·비밀 정보·금지 열" + ("·원문 조각" if windows else "")
+    print(f"통과: {checked} 0건")
 
 
 if __name__ == "__main__":

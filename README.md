@@ -163,7 +163,7 @@ IRP 가입자는 많은데 계좌는 작은 이유를 **금감원 공시와 앱 
 ### 데이터 흐름과 경계
 
 ```mermaid
-flowchart LR
+flowchart TB
     subgraph NOW["지금: 공개 데이터만"]
         direction LR
         A["금감원 공시<br/>구글 플레이 리뷰"] --> B["내 PC<br/>리뷰 원문 · .env<br/>(Git 제외)"]
